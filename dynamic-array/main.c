@@ -1,30 +1,67 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
+// TODO Add proper error handling in every function
+// TODO After implemnting all functions for the array, work on making it generic (void *)
+// TODO Use free() to clean up the array either on user demand or after no more elements are left after removing
 struct DynamicArray
 {
     int *data;    // actual data
     int size;     // current amount of items in the array
     int capacity; // maximum amount of items in the array
 };
-void PrintArray(struct DynamicArray *array);
+
+enum ArithmeticOperation
+{
+    ADD,
+    SUB,
+    MUL,
+    DIV
+};
+
+int performArithmetic(enum ArithmeticOperation operation, int firstNumber, int secondNumber)
+{
+    switch (operation)
+    {
+    ADD:
+        return firstNumber + secondNumber;
+        break;
+    SUB:
+        return firstNumber - secondNumber;
+
+        break;
+    MUL:
+        return firstNumber * secondNumber;
+
+        break;
+    DIV:
+        return firstNumber / secondNumber;
+
+        break;
+    }
+}
+
+void resizeArray(struct DynamicArray *array, enum ArithmeticOperation operation, int amount)
+{
+
+    array->capacity = performArithmetic(operation, array->capacity, amount);
+
+    int *temp = realloc(array->data, array->capacity * sizeof(int));
+    if (temp == NULL)
+    {
+        printf("Failed with reallocation of the array \n");
+        return;
+    }
+    array->data = temp;
+}
 
 void Add(struct DynamicArray *array, int elementToAdd)
 {
     if (array->size == array->capacity)
     {
-        printf("Size of array before resize: %d \n", array->capacity * sizeof(int));
-        // TODO Nove the resizng logic outside of this functions
-        array->capacity = array->capacity * 2;
-        int *temp = realloc(array->data, array->capacity * sizeof(int));
-        if (temp == NULL)
-        {
-            printf("Failed with reallocation of the array \n");
-            return;
-        }
-        array->data = temp;
-        printf("Size of array AFTER resize: %d \n", array->capacity * sizeof(int));
+        resizeArray(array, MUL, 2);
     }
 
     array->data[array->size] = elementToAdd;
@@ -34,9 +71,9 @@ void Add(struct DynamicArray *array, int elementToAdd)
 void Remove(struct DynamicArray *dynamicArray, int elementToRemove)
 {
     // TODO Implement and use binary search
-    // TODO Implement reducing the capacity of the array when size == capacity / 2
     for (int i = 0; i < dynamicArray->size; i++)
     {
+
         if (dynamicArray->data[i] == elementToRemove)
         {
             printf("Element found at index %d, with value %d \n", i, dynamicArray->data[i]);
@@ -45,9 +82,19 @@ void Remove(struct DynamicArray *dynamicArray, int elementToRemove)
             int indexOfLastElement = ((dynamicArray->size - 1) - i);
             memmove(locationOfDeletedElement, locationRightAfterDeletedElement, (indexOfLastElement * sizeof(int)));
             dynamicArray->size = dynamicArray->size - 1;
+
+            if (dynamicArray->size <= ceil(dynamicArray->capacity / 2))
+            {
+                resizeArray(dynamicArray, DIV, 2);
+            }
             return;
         }
     }
+}
+
+int elementAtIndex(struct DynamicArray *dynamicArray, int element)
+{
+    return dynamicArray->data[element];
 }
 
 void PrintArray(struct DynamicArray *array)
@@ -92,6 +139,14 @@ int main()
         PrintArray(dynamicArray);
     }
     printf("Size of array after all elements added:  %d \n", dynamicArray->capacity * sizeof(int));
+    Remove(dynamicArray, 0);
+    PrintArray(dynamicArray);
+    Remove(dynamicArray, 1);
+    PrintArray(dynamicArray);
+    Remove(dynamicArray, 2);
+    PrintArray(dynamicArray);
+    Remove(dynamicArray, 3);
+    PrintArray(dynamicArray);
     Remove(dynamicArray, 4);
     PrintArray(dynamicArray);
     printf("Size of array after all elements REMOVED:  %d \n", dynamicArray->capacity * sizeof(int));
