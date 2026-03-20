@@ -4,6 +4,10 @@
 #include <math.h>
 #include "../lib/dynamic_array.h"
 
+// TODO Add proper error handling in every function
+// TODO After implemnting all functions for the array, work on making it generic (void *)
+// TODO Use free() to clean up the array either on user demand or after no more elements are left after removing
+
 enum ArithmeticOperation { ADD, SUB, MUL, DIV };
 
 static int performArithmetic(enum ArithmeticOperation operation, int first, int second) {
@@ -89,6 +93,12 @@ void PrintArray(struct DynamicArray *array)
 struct DynamicArray *createDynamicArray()
 {
     struct DynamicArray *dynamicArray = malloc(sizeof(struct DynamicArray));
+
+    if(dynamicArray == NULL){
+        printf("Allocating memory for dynamic array struct failed \n");
+        return -1;
+    }
+
     const int CAPACITY = 5;
 
     dynamicArray->capacity = CAPACITY;
@@ -101,4 +111,8 @@ struct DynamicArray *createDynamicArray()
     }
     dynamicArray->data = temp;
     return dynamicArray;
+}
+
+void freeDynamicArray(struct DynamicArray *array){
+    //TODO Implement
 }

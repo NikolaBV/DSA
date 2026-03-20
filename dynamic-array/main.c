@@ -1,9 +1,6 @@
 #include "lib/dynamic_array.h"
 #include <stdio.h>
 
-// TODO Add proper error handling in every function
-// TODO After implemnting all functions for the array, work on making it generic (void *)
-// TODO Use free() to clean up the array either on user demand or after no more elements are left after removing
 
 int main() {
    struct DynamicArray *dynamicArray = createDynamicArray();
