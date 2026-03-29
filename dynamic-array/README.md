@@ -3,7 +3,7 @@
 Run
 
 ```bash
-gcc main.c src/dynamic_array.c -o out/my_program
+gcc main.c src/dynamic_array.c src/utils.c -o out/my_program
 ```
 
 ```bash

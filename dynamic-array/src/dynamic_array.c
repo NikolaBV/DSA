@@ -7,37 +7,6 @@
 // TODO Use free() to clean up the array either on user demand or after no more elements are left after removing
 // TODO Refactor size property of DynamicArray from int => size_t
 
-int sizeOfDataType(enum DATA_TYPE dataType)
-{
-    switch (dataType)
-    {
-    case INT:
-        return sizeof(int);
-    case FLOAT:
-        return sizeof(float);
-
-    case CHAR:
-        return sizeof(char);
-
-    default:
-        return -1;
-    }
-}
-
-static int performArithmetic(enum ArithmeticOperation operation, int first, int second)
-{
-    switch (operation)
-    {
-    case ADD:
-        return first + second;
-    case MUL:
-        return first * second;
-    case DIV:
-        return first / second;
-    default:
-        return first;
-    }
-}
 struct DynamicArray
 {
     void *data;
@@ -45,32 +14,50 @@ struct DynamicArray
     int capacity;
     enum DATA_TYPE dataType;
 };
+void printArrayElement(enum DATA_TYPE dataType, void *element)
+{
+    switch (dataType)
+    {
+    case INT:
+        printf("%d, ", *(int *)element);
+        break;
+    case FLOAT:
+        printf("%f, ", *(float *)element);
+        break;
 
+    case CHAR:
+        printf("%s, ", *(char *)element);
+        break;
+
+    default:
+        return;
+    }
+}
 void resizeArray(struct DynamicArray *array, enum ArithmeticOperation operation, int amount)
 {
+    printf("BEFORE RESIZE LOGIC: size of the array %d \n", array->capacity * sizeOfDataType(array->dataType));
 
     array->capacity = performArithmetic(operation, array->capacity, amount);
 
-    void *temp = realloc(array->data, array->capacity * sizeof(sizeOfDataType(array->dataType)));
+    void *temp = realloc(array->data, array->capacity * sizeOfDataType(array->dataType));
     if (temp == NULL)
     {
         printf("Failed with reallocation of the array \n");
         return;
     }
     array->data = temp;
+    printf("AFTER RESIZE LOGIC size of the array : %d \n", array->capacity * sizeOfDataType(array->dataType));
 }
 
-// TODO Figure out how to make this generic, ive found 2 options so far:
-// 1, Cast the void* to a specific type
-// 2. Use memcpy and calculate manually the index where you need to place the new element
 void Add(struct DynamicArray *array, void *elementToAdd)
 {
     if (array->size == array->capacity)
     {
         resizeArray(array, MUL, 2);
     }
-
-    array->data[array->size] = elementToAdd;
+    char *temp = (char *)array->data;
+    char *newAddress = temp + (array->size * sizeOfDataType(array->dataType));
+    memcpy(newAddress, elementToAdd, sizeOfDataType(array->dataType));
     array->size++;
 }
 
@@ -103,14 +90,16 @@ void Add(struct DynamicArray *array, void *elementToAdd)
 //     return dynamicArray->data[element];
 // }
 
-// void PrintArray(struct DynamicArray *array)
-// {
-//     for (int i = 0; i < array->size; i++)
-//     {
-//         printf("%d, ", array->data[i]);
-//     }
-//     printf("\n");
-// }
+void PrintArray(struct DynamicArray *array)
+{
+    char *temp = (char *)array->data;
+    for (int i = 0; i < array->size; i++)
+    {
+        char *newAddress = temp + (i * sizeOfDataType(array->dataType));
+        printArrayElement(array->dataType, newAddress);
+    }
+    printf("\n");
+}
 
 struct DynamicArray *dynamicArrayCreate(int capacity, enum DATA_TYPE dataType)
 {
@@ -125,9 +114,9 @@ struct DynamicArray *dynamicArrayCreate(int capacity, enum DATA_TYPE dataType)
     dynamicArray->capacity = capacity;
     dynamicArray->size = 0;
 
-    int bytesOfDataType = 0;
+    int bytesOfDataType = sizeOfDataType(dataType);
 
-    void *temp = malloc(dynamicArray->capacity * sizeof(bytesOfDataType));
+    void *temp = malloc(dynamicArray->capacity * bytesOfDataType);
     if (temp == NULL)
     {
         free(dynamicArray);
@@ -139,5 +128,6 @@ struct DynamicArray *dynamicArrayCreate(int capacity, enum DATA_TYPE dataType)
 
 void freeDynamicArray(struct DynamicArray *array)
 {
-    // TODO Implement
+    free(array->data);
+    free(array);
 }
