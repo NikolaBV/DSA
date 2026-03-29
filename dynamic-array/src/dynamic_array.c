@@ -4,29 +4,21 @@
 #include <math.h>
 #include "../lib/dynamic_array.h"
 
-// TODO Use free() to clean up the array either on user demand or after no more elements are left after removing
 // TODO Refactor size property of DynamicArray from int => size_t
 
-struct DynamicArray
-{
-    void *data;
-    int size;
-    int capacity;
-    enum DATA_TYPE dataType;
-};
-void printArrayElement(enum DATA_TYPE dataType, void *element)
+void printArrayElement(enum DATA_TYPE dataType, void *indexOfElement)
 {
     switch (dataType)
     {
     case INT:
-        printf("%d, ", *(int *)element);
+        printf("%d, ", *(int *)indexOfElement);
         break;
     case FLOAT:
-        printf("%f, ", *(float *)element);
+        printf("%f, ", *(float *)indexOfElement);
         break;
 
     case CHAR:
-        printf("%s, ", *(char *)element);
+        printf("%s, ", *(char *)indexOfElement);
         break;
 
     default:
@@ -61,9 +53,11 @@ void Add(struct DynamicArray *array, void *elementToAdd)
     array->size++;
 }
 
-// void Remove(struct DynamicArray *dynamicArray, int elementToRemove)
-// {
-//     // TODO Implement and use binary search
+// TODO Make generic
+//  void Remove(struct DynamicArray *dynamicArray, int elementToRemove)
+//  {
+//      // TODO Implement and use binary search
+
 //     for (int i = 0; i < dynamicArray->size; i++)
 //     {
 
@@ -85,10 +79,18 @@ void Add(struct DynamicArray *array, void *elementToAdd)
 //     }
 // }
 
-// int elementAtIndex(struct DynamicArray *dynamicArray, int element)
-// {
-//     return dynamicArray->data[element];
-// }
+// TODO Make this generic
+
+void *elementAtIndex(struct DynamicArray *array, int indexOfElement)
+{
+    if (indexOfElement > array->size)
+    {
+        printf("Array doesn't have such index ");
+        return NULL;
+    }
+    char *temp = (char *)array->data;
+    return *(temp + (indexOfElement * sizeOfDataType(array->dataType)));
+}
 
 void PrintArray(struct DynamicArray *array)
 {

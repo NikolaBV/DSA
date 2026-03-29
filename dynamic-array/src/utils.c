@@ -31,3 +31,19 @@ int performArithmetic(enum ArithmeticOperation operation, int first, int second)
         return first;
     }
 }
+void *castVoidToAType(void *voidValue, enum DATA_TYPE dataTypeToCastTo)
+{
+    switch (dataTypeToCastTo)
+    {
+    case INT:
+        return (int *)voidValue;
+    case FLOAT:
+        return (float *)voidValue;
+
+    case CHAR:
+        return (char *)voidValue;
+
+    default:
+        return;
+    }
+}

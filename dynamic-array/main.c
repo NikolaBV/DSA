@@ -15,9 +15,12 @@ int main()
         Add(dynamicArray, (void *)&i);
         PrintArray(dynamicArray);
     }
+    int index = 7;
+    printf("Element at index %d is %d", index, elementAtIndex(dynamicArray, index));
     // Remove(dynamicArray, 0);
     // PrintArray(dynamicArray);
     // printf("Size of array after all elements REMOVED:  %d \n", dynamicArray->capacity * sizeof(int));
 
+    freeDynamicArray(dynamicArray);
     return 0;
 }
