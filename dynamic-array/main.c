@@ -4,6 +4,8 @@
 int main()
 {
     struct DynamicArray *dynamicArray = dynamicArrayCreate(3, INT);
+    dynamicArray->printer = printInt;
+
     if (dynamicArray == NULL)
     {
         fprintf(stderr, "Failed to create array. Out of memory!\n");
@@ -15,8 +17,9 @@ int main()
         Add(dynamicArray, (void *)&i);
         PrintArray(dynamicArray);
     }
-    int index = 7;
-    printf("Element at index %d is %d", index, elementAtIndex(dynamicArray, index));
+
+    int *secondElement = elementAtIndex(dynamicArray, 1);
+    printf("Element at index 1 is: %d", *secondElement);
     // Remove(dynamicArray, 0);
     // PrintArray(dynamicArray);
     // printf("Size of array after all elements REMOVED:  %d \n", dynamicArray->capacity * sizeof(int));

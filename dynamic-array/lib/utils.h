@@ -1,3 +1,4 @@
+#include <stdio.h>
 enum ArithmeticOperation
 {
     ADD,
@@ -12,14 +13,6 @@ enum DATA_TYPE
     CHAR,
 };
 
-struct DynamicArray
-{
-    void *data;
-    int size;
-    int capacity;
-    enum DATA_TYPE dataType;
-};
-
 int performArithmetic(enum ArithmeticOperation operation, int first, int second);
 int sizeOfDataType(enum DATA_TYPE dataType);
-void *castVoidToAType(void *voidValue, enum DATA_TYPE dataTypeToCastTo);
+void printInt(const void *element);

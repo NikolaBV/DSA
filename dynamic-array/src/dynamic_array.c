@@ -6,25 +6,6 @@
 
 // TODO Refactor size property of DynamicArray from int => size_t
 
-void printArrayElement(enum DATA_TYPE dataType, void *indexOfElement)
-{
-    switch (dataType)
-    {
-    case INT:
-        printf("%d, ", *(int *)indexOfElement);
-        break;
-    case FLOAT:
-        printf("%f, ", *(float *)indexOfElement);
-        break;
-
-    case CHAR:
-        printf("%s, ", *(char *)indexOfElement);
-        break;
-
-    default:
-        return;
-    }
-}
 void resizeArray(struct DynamicArray *array, enum ArithmeticOperation operation, int amount)
 {
     printf("BEFORE RESIZE LOGIC: size of the array %d \n", array->capacity * sizeOfDataType(array->dataType));
@@ -48,8 +29,9 @@ void Add(struct DynamicArray *array, void *elementToAdd)
         resizeArray(array, MUL, 2);
     }
     char *temp = (char *)array->data;
-    char *newAddress = temp + (array->size * sizeOfDataType(array->dataType));
-    memcpy(newAddress, elementToAdd, sizeOfDataType(array->dataType));
+    char *currentElement = temp + (array->size * sizeOfDataType(array->dataType));
+    memcpy(currentElement, elementToAdd, sizeOfDataType(array->dataType));
+
     array->size++;
 }
 
@@ -83,22 +65,25 @@ void Add(struct DynamicArray *array, void *elementToAdd)
 
 void *elementAtIndex(struct DynamicArray *array, int indexOfElement)
 {
-    if (indexOfElement > array->size)
+    if (indexOfElement >= array->size)
     {
         printf("Array doesn't have such index ");
         return NULL;
     }
     char *temp = (char *)array->data;
-    return *(temp + (indexOfElement * sizeOfDataType(array->dataType)));
+    char *elementToReturn = temp + (indexOfElement * sizeOfDataType(array->dataType));
+    return (void *)elementToReturn;
 }
 
 void PrintArray(struct DynamicArray *array)
 {
-    char *temp = (char *)array->data;
+    if (array == NULL || array->data == NULL)
+        return;
+    char *temp = array->data;
     for (int i = 0; i < array->size; i++)
     {
-        char *newAddress = temp + (i * sizeOfDataType(array->dataType));
-        printArrayElement(array->dataType, newAddress);
+        char *currentElement = temp + (i * sizeOfDataType(array->dataType));
+        array->printer(currentElement);
     }
     printf("\n");
 }

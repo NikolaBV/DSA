@@ -1,5 +1,8 @@
 #include "../lib/utils.h"
 
+// TODO Make some sort of a wrapper function around the switch(dataType) as its
+//  used in castVoidToAType as welll and it might be used in other functions related
+// to data types in the future
 int sizeOfDataType(enum DATA_TYPE dataType)
 {
     switch (dataType)
@@ -31,19 +34,7 @@ int performArithmetic(enum ArithmeticOperation operation, int first, int second)
         return first;
     }
 }
-void *castVoidToAType(void *voidValue, enum DATA_TYPE dataTypeToCastTo)
+void printInt(const void *element)
 {
-    switch (dataTypeToCastTo)
-    {
-    case INT:
-        return (int *)voidValue;
-    case FLOAT:
-        return (float *)voidValue;
-
-    case CHAR:
-        return (char *)voidValue;
-
-    default:
-        return;
-    }
+    printf("%d ", *(int *)element);
 }
