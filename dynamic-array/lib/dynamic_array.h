@@ -1,17 +1,24 @@
 #ifndef DYNAMIC_ARRAY_H
+#include "../lib/utils.h"
+
 #define DYNAMIC_ARRAY_H
 
+typedef void (*PrintFunc)(const void *item);
 
-struct DynamicArray {
-    int *data;
+typedef struct dynamic_array
+{
+    void *data;
     int size;
     int capacity;
-};
+    size_t elementSize;
+    PrintFunc printer;
+} DynamicArray;
 
-struct DynamicArray* createDynamicArray();
-void Add(struct DynamicArray *array, int elementToAdd);
-void Remove(struct DynamicArray *dynamicArray, int elementToRemove);
-void PrintArray(struct DynamicArray *array);
-void freeDynamicArray(struct DynamicArray *array);
+DynamicArray *dynamicArrayCreate(int capacity, size_t sizeOfElement);
+void Add(DynamicArray *array, void *elementToAdd);
+void Remove(DynamicArray *array, void *elementToRemove);
+void PrintArray(DynamicArray *array);
+void freeDynamicArray(DynamicArray *array);
+void *elementAtIndex(DynamicArray *array, int indexOfElement);
 
 #endif
