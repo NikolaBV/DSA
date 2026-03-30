@@ -1,18 +1,12 @@
 #include <stdio.h>
-enum ArithmeticOperation
+typedef enum
 {
     ADD,
     SUB,
     MUL,
     DIV
-};
-enum DATA_TYPE
-{
-    INT,
-    FLOAT,
-    CHAR,
-};
+} arithmeticOperation;
 
-int performArithmetic(enum ArithmeticOperation operation, int first, int second);
-int sizeOfDataType(enum DATA_TYPE dataType);
+// TODO Think about either removing this or making it generic
+int performArithmetic(arithmeticOperation operation, int first, int second);
 void printInt(const void *element);

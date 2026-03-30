@@ -6,7 +6,7 @@
 
 // TODO Refactor size property of DynamicArray from int => size_t
 
-void resizeArray(struct DynamicArray *array, enum ArithmeticOperation operation, int amount)
+void resizeArray(DynamicArray *array, arithmeticOperation operation, int amount)
 {
     printf("BEFORE RESIZE LOGIC: size of the array %d \n", array->capacity * array->elementSize);
 
@@ -22,7 +22,7 @@ void resizeArray(struct DynamicArray *array, enum ArithmeticOperation operation,
     printf("AFTER RESIZE LOGIC size of the array : %d \n", array->capacity * array->elementSize);
 }
 
-void Add(struct DynamicArray *array, void *elementToAdd)
+void Add(DynamicArray *array, void *elementToAdd)
 {
     if (array->size == array->capacity)
     {
@@ -63,7 +63,7 @@ void Add(struct DynamicArray *array, void *elementToAdd)
 
 // TODO Make this generic
 
-void *elementAtIndex(struct DynamicArray *array, int indexOfElement)
+void *elementAtIndex(DynamicArray *array, int indexOfElement)
 {
     if (indexOfElement >= array->size)
     {
@@ -75,7 +75,7 @@ void *elementAtIndex(struct DynamicArray *array, int indexOfElement)
     return (void *)elementToReturn;
 }
 
-void PrintArray(struct DynamicArray *array)
+void PrintArray(DynamicArray *array)
 {
     if (array == NULL || array->data == NULL)
         return;
@@ -88,9 +88,9 @@ void PrintArray(struct DynamicArray *array)
     printf("\n");
 }
 
-struct DynamicArray *dynamicArrayCreate(int capacity, size_t sizeOfElement)
+DynamicArray *dynamicArrayCreate(int capacity, size_t sizeOfElement)
 {
-    struct DynamicArray *dynamicArray = malloc(sizeof(struct DynamicArray));
+    DynamicArray *dynamicArray = malloc(sizeof(DynamicArray));
 
     if (dynamicArray == NULL)
     {
@@ -112,7 +112,7 @@ struct DynamicArray *dynamicArrayCreate(int capacity, size_t sizeOfElement)
     return dynamicArray;
 }
 
-void freeDynamicArray(struct DynamicArray *array)
+void freeDynamicArray(DynamicArray *array)
 {
     free(array->data);
     free(array);

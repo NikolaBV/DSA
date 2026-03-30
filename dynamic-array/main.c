@@ -3,7 +3,7 @@
 
 int main()
 {
-    struct DynamicArray *dynamicArray = dynamicArrayCreate(5, sizeof(int));
+    DynamicArray *dynamicArray = dynamicArrayCreate(5, sizeof(int));
     dynamicArray->printer = printInt;
 
     if (dynamicArray == NULL)
