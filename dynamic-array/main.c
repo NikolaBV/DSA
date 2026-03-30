@@ -3,7 +3,7 @@
 
 int main()
 {
-    DynamicArray *dynamicArray = dynamicArrayCreate(5, sizeof(int));
+    DynamicArray *dynamicArray = dynamicArrayCreate(3, sizeof(int));
     dynamicArray->printer = printInt;
 
     if (dynamicArray == NULL)
@@ -12,17 +12,19 @@ int main()
         return 1;
     }
 
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 5; i++)
     {
         Add(dynamicArray, (void *)&i);
         PrintArray(dynamicArray);
     }
 
-    int *secondElement = elementAtIndex(dynamicArray, 1);
-    printf("Element at index 1 is: %d", *secondElement);
-    // Remove(dynamicArray, 0);
-    // PrintArray(dynamicArray);
-    // printf("Size of array after all elements REMOVED:  %d \n", dynamicArray->capacity * sizeof(int));
+    for (int i = 0; i < 5; i++)
+    {
+        Remove(dynamicArray, (void *)&i);
+        PrintArray(dynamicArray);
+    }
+
+    printf("Size of array after all elements REMOVED:  %d \n", dynamicArray->capacity * sizeof(int));
 
     freeDynamicArray(dynamicArray);
     return 0;

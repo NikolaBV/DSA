@@ -1,6 +1,6 @@
 #include "../lib/utils.h"
 
-int performArithmetic(enum ArithmeticOperation operation, int first, int second)
+int performArithmetic(arithmeticOperation operation, int first, int second)
 {
     switch (operation)
     {

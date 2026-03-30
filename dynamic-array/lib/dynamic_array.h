@@ -16,7 +16,7 @@ typedef struct dynamic_array
 
 DynamicArray *dynamicArrayCreate(int capacity, size_t sizeOfElement);
 void Add(DynamicArray *array, void *elementToAdd);
-void Remove(DynamicArray *dynamicArray, int elementToRemove);
+void Remove(DynamicArray *array, void *elementToRemove);
 void PrintArray(DynamicArray *array);
 void freeDynamicArray(DynamicArray *array);
 void *elementAtIndex(DynamicArray *array, int indexOfElement);
