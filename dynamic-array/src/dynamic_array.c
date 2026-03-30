@@ -8,18 +8,18 @@
 
 void resizeArray(struct DynamicArray *array, enum ArithmeticOperation operation, int amount)
 {
-    printf("BEFORE RESIZE LOGIC: size of the array %d \n", array->capacity * sizeOfDataType(array->dataType));
+    printf("BEFORE RESIZE LOGIC: size of the array %d \n", array->capacity * array->elementSize);
 
     array->capacity = performArithmetic(operation, array->capacity, amount);
 
-    void *temp = realloc(array->data, array->capacity * sizeOfDataType(array->dataType));
+    void *temp = realloc(array->data, array->capacity * array->elementSize);
     if (temp == NULL)
     {
         printf("Failed with reallocation of the array \n");
         return;
     }
     array->data = temp;
-    printf("AFTER RESIZE LOGIC size of the array : %d \n", array->capacity * sizeOfDataType(array->dataType));
+    printf("AFTER RESIZE LOGIC size of the array : %d \n", array->capacity * array->elementSize);
 }
 
 void Add(struct DynamicArray *array, void *elementToAdd)
@@ -29,8 +29,8 @@ void Add(struct DynamicArray *array, void *elementToAdd)
         resizeArray(array, MUL, 2);
     }
     char *temp = (char *)array->data;
-    char *currentElement = temp + (array->size * sizeOfDataType(array->dataType));
-    memcpy(currentElement, elementToAdd, sizeOfDataType(array->dataType));
+    char *currentElement = temp + (array->size * array->elementSize);
+    memcpy(currentElement, elementToAdd, array->elementSize);
 
     array->size++;
 }
@@ -71,7 +71,7 @@ void *elementAtIndex(struct DynamicArray *array, int indexOfElement)
         return NULL;
     }
     char *temp = (char *)array->data;
-    char *elementToReturn = temp + (indexOfElement * sizeOfDataType(array->dataType));
+    char *elementToReturn = temp + (indexOfElement * array->elementSize);
     return (void *)elementToReturn;
 }
 
@@ -82,13 +82,13 @@ void PrintArray(struct DynamicArray *array)
     char *temp = array->data;
     for (int i = 0; i < array->size; i++)
     {
-        char *currentElement = temp + (i * sizeOfDataType(array->dataType));
+        char *currentElement = temp + (i * array->elementSize);
         array->printer(currentElement);
     }
     printf("\n");
 }
 
-struct DynamicArray *dynamicArrayCreate(int capacity, enum DATA_TYPE dataType)
+struct DynamicArray *dynamicArrayCreate(int capacity, size_t sizeOfElement)
 {
     struct DynamicArray *dynamicArray = malloc(sizeof(struct DynamicArray));
 
@@ -99,11 +99,10 @@ struct DynamicArray *dynamicArrayCreate(int capacity, enum DATA_TYPE dataType)
     }
 
     dynamicArray->capacity = capacity;
+    dynamicArray->elementSize = sizeOfElement;
     dynamicArray->size = 0;
 
-    int bytesOfDataType = sizeOfDataType(dataType);
-
-    void *temp = malloc(dynamicArray->capacity * bytesOfDataType);
+    void *temp = malloc(dynamicArray->capacity * sizeOfElement);
     if (temp == NULL)
     {
         free(dynamicArray);
