@@ -1,9 +1,19 @@
-#ifndef SINGLY_LINKED_LIST
+#include <stddef.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-#define SINGLY_LINKED_LIST
+typedef struct
+{
+    struct Node *next;
+    void *data;
+    int length;
+    size_t elementSize;
+} Node;
 
 // TODO Implement all functions
-void singlyLinkedListCreate();
+Node *singlyLinkedListCreate(size_t elementSize);
+void Insert(Node *node, void *dataOfNewNode);
 // 1. Insertion at the beginning
 // 2. Insertion At the end
 // 3. Insertion at the position
@@ -13,5 +23,3 @@ void singlyLinkedListCreate();
 // 7. Traversal
 // 8. Reverse
 // 9. Search
-
-#endif
