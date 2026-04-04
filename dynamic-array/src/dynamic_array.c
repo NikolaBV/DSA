@@ -22,7 +22,7 @@ void resizeArray(DynamicArray *array, arithmeticOperation operation, int amount)
     printf("AFTER RESIZE LOGIC size of the array : %d \n", array->capacity * array->elementSize);
 }
 
-void Add(DynamicArray *array, void *elementToAdd)
+void InsertAtHead(DynamicArray *array, void *elementToAdd)
 {
     if (array->size == array->capacity)
     {

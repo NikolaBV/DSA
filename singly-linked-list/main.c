@@ -2,10 +2,11 @@
 
 int main()
 {
-    Node *node = singlyLinkedListCreate(sizeof(int));
-    int *dataPtr = (int *)node->data;
+    struct Node *node = singlyLinkedListCreate(sizeof(int));
+    InsertAtTail(node, (void *)1);
 
-    printf("Element size: %zu, Value: %d\n", node->elementSize, *dataPtr);
+    int *dataPtr = (int *)node->next->next->next->data;
+    printf("%zu \n", dataPtr);
 
     free(node->data);
     free(node);

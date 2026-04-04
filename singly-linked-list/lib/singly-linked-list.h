@@ -3,17 +3,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct
+struct Node
 {
-    struct Node *next;
     void *data;
-    int length;
-    size_t elementSize;
-} Node;
+    int elementSize;
+    struct Node *next;
+};
 
 // TODO Implement all functions
-Node *singlyLinkedListCreate(size_t elementSize);
-void Insert(Node *node, void *dataOfNewNode);
+struct Node *singlyLinkedListCreate(size_t elementSize);
+void InsertAtHead(struct Node *node, void *dataOfNewNode);
+void InsertAtTail(struct Node *node, void *dataOfNewNode);
+struct Node *findLastNode(struct Node *node);
 // 1. Insertion at the beginning
 // 2. Insertion At the end
 // 3. Insertion at the position

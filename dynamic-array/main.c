@@ -14,7 +14,7 @@ int main()
 
     for (int i = 0; i < 5; i++)
     {
-        Add(dynamicArray, (void *)&i);
+        InsertAtHead(dynamicArray, (void *)&i);
         PrintArray(dynamicArray);
     }
 
