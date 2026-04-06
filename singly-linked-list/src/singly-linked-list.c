@@ -3,59 +3,46 @@
 #include <stdlib.h>
 #include "../lib/singly-linked-list.h"
 
-struct Node *singlyLinkedListCreate(size_t elementSize)
+struct SLinkedList *singlyLinkedListCreate(size_t elementSize)
 {
-    struct Node *node = malloc(sizeof(struct Node));
+    struct SLinkedList *linkedList = malloc(sizeof(struct SLinkedList));
 
-    if (node == NULL)
+    if (linkedList == NULL)
     {
-        printf("Couldn't create a linked list \n");
-        return NULL;
-    }
-    void *temp = malloc(elementSize);
-
-    if (temp == NULL)
-    {
-        free(node);
-        printf("Couldn't create a linked list \n");
+        printf("Couldn't allocate memory for linked list");
         return NULL;
     }
 
-    node->data = temp;
-    node->elementSize = elementSize;
-    node->next = NULL;
+    linkedList->head = NULL;
+    linkedList->tail = NULL;
+    linkedList->length = 0;
+    linkedList->elementSize = elementSize;
 
-    return node;
+    return linkedList;
 }
 
-struct Node *findLastNode(struct Node *node)
+void InsertAtTail(struct SLinkedList *linkedList, void *dataOfNewNode)
 {
-    if (node->next == NULL)
-    {
-        return node;
-    }
-    findLastNode(node->next);
-}
-
-void InsertAtTail(struct Node *node, void *dataOfNewNode)
-{
-    struct Node *lastNode = findLastNode(node);
-    if (lastNode == NULL)
-    {
-        printf("Couldn't find the last node\n");
-        return;
-    }
-    struct Node *newNode = malloc(sizeof(node));
-
+    struct Node *newNode = malloc(sizeof(struct Node));
     if (newNode == NULL)
     {
-        printf("Couldn't allocate memory for a new node\n");
+        printf("Couldn't allocate memory for the new node\n");
         return;
     }
 
     newNode->data = dataOfNewNode;
-    newNode->elementSize = node->elementSize;
     newNode->next = NULL;
 
-    lastNode->next = newNode;
+    if (linkedList->head == NULL)
+    {
+        linkedList->head = newNode;
+        linkedList->tail = newNode;
+    }
+    else
+    {
+        linkedList->tail->next = newNode;
+        linkedList->tail = newNode;
+    }
+
+    linkedList->length++;
 }

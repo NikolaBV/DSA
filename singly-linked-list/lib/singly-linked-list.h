@@ -6,21 +6,25 @@
 struct Node
 {
     void *data;
-    int elementSize;
     struct Node *next;
 };
 
+struct SLinkedList
+{
+    struct Node *head;
+    struct Node *tail;
+    size_t length;
+    size_t elementSize;
+};
+
 // TODO Implement all functions
-struct Node *singlyLinkedListCreate(size_t elementSize);
-void InsertAtHead(struct Node *node, void *dataOfNewNode);
-void InsertAtTail(struct Node *node, void *dataOfNewNode);
-struct Node *findLastNode(struct Node *node);
-// 1. Insertion at the beginning
-// 2. Insertion At the end
-// 3. Insertion at the position
-// 4. Deletion from the beginning
-// 5. Deletion from the end
-// 6. Deletion at the position
-// 7. Traversal
-// 8. Reverse
-// 9. Search
+struct SLinkedList *singlyLinkedListCreate(size_t elementSize);
+void InsertAtTail(struct SLinkedList *linkedList, void *dataOfNewNode);
+// 1. Insertion at the position
+// 2. Insertion at the beginning
+// 3. Deletion from the beginning
+// 4. Deletion from the end
+// 5. Deletion at the position
+// 6. Traversal
+// 7. Reverse
+// 8. Search

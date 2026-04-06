@@ -2,12 +2,20 @@
 
 int main()
 {
-    struct Node *node = singlyLinkedListCreate(sizeof(int));
-    InsertAtTail(node, (void *)1);
+    struct SLinkedList *linkedList = singlyLinkedListCreate(sizeof(int));
+    if (linkedList == NULL)
+    {
+        free(linkedList);
+        printf("Couldn't allocate memory for the new node");
+        return -1;
+    }
 
-    int *dataPtr = (int *)node->next->next->next->data;
-    printf("%zu \n", dataPtr);
+    InsertAtTail(linkedList, (void *)1);
+    InsertAtTail(linkedList, (void *)2);
+    InsertAtTail(linkedList, (void *)3);
 
-    free(node->data);
-    free(node);
+    int *dataPtr = (int *)linkedList->head->data;
+    printf("Value of node 1 is: %zu\n", dataPtr);
+
+    free(linkedList);
 }
