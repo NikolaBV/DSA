@@ -46,3 +46,30 @@ void InsertAtTail(struct SLinkedList *linkedList, void *dataOfNewNode)
 
     linkedList->length++;
 }
+
+void InsertAtHead(struct SLinkedList *linkedList, void *dataOfNewNode)
+{
+    struct Node *newNode = malloc(sizeof(struct Node));
+    if (newNode == NULL)
+    {
+        printf("Couldn't allocate space for a node\n");
+        return;
+    }
+
+    newNode->data = dataOfNewNode;
+
+    if (linkedList->head == NULL)
+    {
+        printf("List is empty, inserting at head \n");
+        linkedList->head = newNode;
+        linkedList->tail = newNode;
+        linkedList->length++;
+    }
+    else
+    {
+        printf("List is has a head, shifting and inserting new node \n");
+        struct Node *previousHead = linkedList->head;
+        linkedList->head = newNode;
+        newNode->next = previousHead;
+    }
+}

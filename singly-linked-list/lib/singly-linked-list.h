@@ -17,11 +17,10 @@ struct SLinkedList
     size_t elementSize;
 };
 
-// TODO Implement all functions
 struct SLinkedList *singlyLinkedListCreate(size_t elementSize);
 void InsertAtTail(struct SLinkedList *linkedList, void *dataOfNewNode);
+void InsertAtHead(struct SLinkedList *linkedList, void *dataOfNewNode);
 // 1. Insertion at the position
-// 2. Insertion at the beginning
 // 3. Deletion from the beginning
 // 4. Deletion from the end
 // 5. Deletion at the position
