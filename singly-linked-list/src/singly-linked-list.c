@@ -60,16 +60,52 @@ void InsertAtHead(struct SLinkedList *linkedList, void *dataOfNewNode)
 
     if (linkedList->head == NULL)
     {
-        printf("List is empty, inserting at head \n");
         linkedList->head = newNode;
         linkedList->tail = newNode;
         linkedList->length++;
     }
     else
     {
-        printf("List is has a head, shifting and inserting new node \n");
         struct Node *previousHead = linkedList->head;
         linkedList->head = newNode;
         newNode->next = previousHead;
     }
+}
+struct Node *InsertAtIndex(struct SLinkedList *linkedList, void *dataOfNewNode, int index)
+{
+
+    if (linkedList->head == NULL)
+    {
+        printf("Can't insert at index of an empty linked list \n");
+        return NULL;
+    }
+    struct Node *elementAtIndex = findNodeInListAtIndex(linkedList, 1);
+
+    if (elementAtIndex == NULL)
+    {
+        return NULL;
+    }
+    int *dataPtr = (int *)elementAtIndex->data;
+    printf("Value node at index 1 is: %zu\n", dataPtr);
+    return elementAtIndex;
+}
+
+struct Node *findNodeInListAtIndex(struct SLinkedList *list, int index)
+{
+    int counter = 0;
+    struct Node *node = list->head;
+
+    while (counter != index)
+    {
+        node = node->next;
+
+        if (node == NULL)
+        {
+            printf("Undex is out of bounds of the list \n");
+            return NULL;
+        }
+
+        index++;
+    }
+    return node;
 }

@@ -10,9 +10,10 @@ int main()
         return -1;
     }
 
-    InsertAtHead(linkedList, (void *)3);
-    InsertAtHead(linkedList, (void *)2);
-    InsertAtHead(linkedList, (void *)1);
+    InsertAtTail(linkedList, (void *)1);
+    InsertAtTail(linkedList, (void *)2);
+
+    InsertAtIndex(linkedList, (void *)50, 1);
     int *dataPtr = (int *)linkedList->head->next->next->data;
     printf("Value of node 1 is: %zu\n", dataPtr);
 
