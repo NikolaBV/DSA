@@ -20,9 +20,9 @@ struct SLinkedList
 struct SLinkedList *singlyLinkedListCreate(size_t elementSize);
 void InsertAtTail(struct SLinkedList *linkedList, void *dataOfNewNode);
 void InsertAtHead(struct SLinkedList *linkedList, void *dataOfNewNode);
-struct Node *InsertAtIndex(struct SLinkedList *list, void *dataOfNewNode, int index);
+void UpdateAtIndex(struct SLinkedList *list, void *newDataToInsertIntoNode, int index);
+void InsertAtIndex(struct SLinkedList *list, void *data, int index);
 struct Node *findNodeInListAtIndex(struct SLinkedList *list, int index);
-// 1. Insertion at the position
 // 3. Deletion from the beginning
 // 4. Deletion from the end
 // 5. Deletion at the position
