@@ -22,10 +22,10 @@ void InsertAtTail(struct SLinkedList *linkedList, void *dataOfNewNode);
 void InsertAtHead(struct SLinkedList *linkedList, void *dataOfNewNode);
 void UpdateAtIndex(struct SLinkedList *list, void *newDataToInsertIntoNode, int index);
 void InsertAtIndex(struct SLinkedList *list, void *data, int index);
+void DeleteAtIndex(struct SLinkedList *list, int index);
 void DeleteHead(struct SLinkedList *list);
 void DeleteTail(struct SLinkedList *list);
 struct Node *findNodeInListAtIndex(struct SLinkedList *list, int index);
-// 4. Deletion from the end
 // 5. Deletion at the position
 // 6. Traversal
 // 6.1. When you implement a traversal function, implement a freeList that goes through each node and frees its memory too

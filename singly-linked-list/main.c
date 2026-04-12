@@ -18,13 +18,7 @@ int main()
     int *firstNode = (int *)linkedList->head->data;
     int *secondNode = (int *)linkedList->head->next->data;
 
-    printf("Value of node 1 is: %zu\n", firstNode);
-    printf("Value of node 2 is: %zu\n", secondNode);
-
-    DeleteTail(linkedList);
-    DeleteTail(linkedList);
-    DeleteTail(linkedList);
-    DeleteTail(linkedList);
+    DeleteAtIndex(linkedList, 0);
 
     free(linkedList);
 }

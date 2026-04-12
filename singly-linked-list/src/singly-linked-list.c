@@ -43,7 +43,6 @@ void InsertAtTail(struct SLinkedList *linkedList, void *dataOfNewNode)
         linkedList->tail->next = newNode;
         linkedList->tail = newNode;
     }
-
     linkedList->length++;
 }
 
@@ -162,6 +161,35 @@ void DeleteTail(struct SLinkedList *list)
     }
 
     free(oldTail);
+    list->length--;
+    printf("Tail deleted. New length: %d\n", list->length);
+}
+
+void DeleteAtIndex(struct SLinkedList *list, int index)
+{
+    if (list == NULL || list->head == NULL)
+    {
+        printf("Can't delete: List is empty.\n");
+        return;
+    }
+    if (index == 0)
+    {
+        printf("Call delete head \n");
+        DeleteHead(list);
+        return;
+    }
+    if (index == list->length - 1)
+    {
+        printf("Call delete tail \n");
+        DeleteTail(list);
+        return;
+    }
+
+    struct Node *elementToDelete = findNodeInListAtIndex(list, index);
+    struct Node *previous = findNodeInListAtIndex(list, index - 1);
+
+    previous->next = elementToDelete->next;
+    free(elementToDelete);
     list->length--;
     printf("Tail deleted. New length: %d\n", list->length);
 }
