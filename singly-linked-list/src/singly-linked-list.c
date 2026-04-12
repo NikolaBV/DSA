@@ -110,11 +110,7 @@ void InsertAtIndex(struct SLinkedList *list, void *data, int index)
     struct Node *newNode = malloc(sizeof(struct Node));
     newNode->data = data;
 
-    struct Node *prev = list->head;
-    for (int i = 0; i < index - 1; i++)
-    {
-        prev = prev->next;
-    }
+    struct Node *prev = findNodeInListAtIndex(list, index - 1);
 
     newNode->next = prev->next;
     prev->next = newNode;
@@ -143,11 +139,38 @@ void DeleteHead(struct SLinkedList *list)
     printf("Head deleted. New length: %d\n", list->length);
 }
 
+void DeleteTail(struct SLinkedList *list)
+{
+    if (list == NULL || list->head == NULL)
+    {
+        printf("Can't delete: List is empty.\n");
+        return;
+    }
+
+    struct Node *oldTail = list->tail;
+
+    if (list->head == list->tail)
+    {
+        list->head = NULL;
+        list->tail = NULL;
+    }
+    else
+    {
+        struct Node *newTail = findNodeInListAtIndex(list, list->length - 2);
+        list->tail = newTail;
+        list->tail->next = NULL;
+    }
+
+    free(oldTail);
+    list->length--;
+    printf("Tail deleted. New length: %d\n", list->length);
+}
+
 struct Node *findNodeInListAtIndex(struct SLinkedList *list, int index)
 {
-    if (index >= list->length)
+    if (index < 0 || index >= list->length)
     {
-        printf("Index out of bounds of the list");
+        printf("Index out of bounds\n");
         return NULL;
     }
     struct Node *node = list->head;
@@ -163,4 +186,5 @@ struct Node *findNodeInListAtIndex(struct SLinkedList *list, int index)
             node = node->next;
         }
     }
+    return NULL;
 }

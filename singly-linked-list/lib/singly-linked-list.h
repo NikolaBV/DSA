@@ -23,6 +23,7 @@ void InsertAtHead(struct SLinkedList *linkedList, void *dataOfNewNode);
 void UpdateAtIndex(struct SLinkedList *list, void *newDataToInsertIntoNode, int index);
 void InsertAtIndex(struct SLinkedList *list, void *data, int index);
 void DeleteHead(struct SLinkedList *list);
+void DeleteTail(struct SLinkedList *list);
 struct Node *findNodeInListAtIndex(struct SLinkedList *list, int index);
 // 4. Deletion from the end
 // 5. Deletion at the position

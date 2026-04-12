@@ -21,10 +21,10 @@ int main()
     printf("Value of node 1 is: %zu\n", firstNode);
     printf("Value of node 2 is: %zu\n", secondNode);
 
-    DeleteHead(linkedList);
-    DeleteHead(linkedList);
-    DeleteHead(linkedList);
-    DeleteHead(linkedList);
+    DeleteTail(linkedList);
+    DeleteTail(linkedList);
+    DeleteTail(linkedList);
+    DeleteTail(linkedList);
 
     free(linkedList);
 }
