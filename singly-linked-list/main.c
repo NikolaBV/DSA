@@ -13,14 +13,18 @@ int main()
 
     InsertAtTail(linkedList, (void *)(intptr_t)1);
     InsertAtTail(linkedList, (void *)(intptr_t)2);
-
-    InsertAtIndex(linkedList, (void *)(intptr_t)200, 0);
+    InsertAtTail(linkedList, (void *)(intptr_t)3);
 
     int *firstNode = (int *)linkedList->head->data;
     int *secondNode = (int *)linkedList->head->next->data;
 
     printf("Value of node 1 is: %zu\n", firstNode);
     printf("Value of node 2 is: %zu\n", secondNode);
+
+    DeleteHead(linkedList);
+    DeleteHead(linkedList);
+    DeleteHead(linkedList);
+    DeleteHead(linkedList);
 
     free(linkedList);
 }

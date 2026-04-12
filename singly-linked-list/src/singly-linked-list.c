@@ -121,6 +121,28 @@ void InsertAtIndex(struct SLinkedList *list, void *data, int index)
 
     list->length++;
 }
+
+void DeleteHead(struct SLinkedList *list)
+{
+    if (list == NULL || list->head == NULL)
+    {
+        printf("Can't delete head: List is empty.\n");
+        return;
+    }
+
+    struct Node *oldHead = list->head;
+    list->head = oldHead->next;
+
+    if (list->head == NULL)
+    {
+        list->tail = NULL;
+    }
+    list->length--;
+
+    free(oldHead);
+    printf("Head deleted. New length: %d\n", list->length);
+}
+
 struct Node *findNodeInListAtIndex(struct SLinkedList *list, int index)
 {
     if (index >= list->length)
