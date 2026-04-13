@@ -194,6 +194,27 @@ void DeleteAtIndex(struct SLinkedList *list, int index)
     printf("Tail deleted. New length: %d\n", list->length);
 }
 
+void Traverse(struct SLinkedList *list, int (*callback)(void *data, void *context), void *context)
+{
+
+    if (list->head == NULL)
+    {
+        printf("Can't traverse an empty list \n");
+        return;
+    }
+
+    struct Node *currentNode = list->head;
+
+    while (currentNode != NULL)
+    {
+        int callbackResult = callback(currentNode->data, context);
+        if (callbackResult)
+            break;
+
+        currentNode = currentNode->next;
+    }
+}
+
 struct Node *findNodeInListAtIndex(struct SLinkedList *list, int index)
 {
     if (index < 0 || index >= list->length)

@@ -25,9 +25,10 @@ void InsertAtIndex(struct SLinkedList *list, void *data, int index);
 void DeleteAtIndex(struct SLinkedList *list, int index);
 void DeleteHead(struct SLinkedList *list);
 void DeleteTail(struct SLinkedList *list);
+void Traverse(struct SLinkedList *list, int (*callback)(void *data, void *context), void *context);
 struct Node *findNodeInListAtIndex(struct SLinkedList *list, int index);
-// 5. Deletion at the position
 // 6. Traversal
-// 6.1. When you implement a traversal function, implement a freeList that goes through each node and frees its memory too
+// 6.1. When you implement a traversal function, implement these as callbacks to the traversal:
+// freeList
 // 7. Reverse
 // 8. Search
