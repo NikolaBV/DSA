@@ -10,6 +10,21 @@ int sumNodeValues(void *data, void *context)
     return 0;
 }
 
+int compareInts(void *firstNumber, void *secondNumber)
+{
+    int firstNumberCasted = (int)(intptr_t)firstNumber;
+    int secondNumberCasted = (int)(intptr_t)secondNumber;
+
+    if (firstNumberCasted == secondNumberCasted)
+    {
+        return 0;
+    }
+    else
+    {
+        return 1;
+    }
+}
+
 int main()
 {
     struct SLinkedList *linkedList = singlyLinkedListCreate(sizeof(int));
@@ -32,8 +47,11 @@ int main()
     Traverse(linkedList, sumNodeValues, &sum);
 
     printf("First node: %d\n", firstNode);
-
     printf("Sum of all nodes is: %d\n", sum);
-   
-    free(linkedList);
+
+    void *result;
+    if (find(linkedList, (void *)(intptr_t)4, compareInts, &result) == 0)
+    {
+        printf("Result data: %d", (void *)(intptr_t)result);
+    }
 }

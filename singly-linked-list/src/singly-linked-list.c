@@ -217,9 +217,11 @@ int destroyList(void *data, void *context)
     return 0;
 }
 
+// TODO Refactor to use the Traverse function logic
 void SLinkedListDestroy(struct SLinkedList *list, void (*dataDestructor)(void *data))
 {
-    if (list == NULL) return;
+    if (list == NULL)
+        return;
 
     struct Node *current = list->head;
     while (current != NULL)
@@ -235,10 +237,38 @@ void SLinkedListDestroy(struct SLinkedList *list, void (*dataDestructor)(void *d
         current = next;
     }
 
-    // 3. Free the LIST container
     free(list);
 }
 
+int find(struct SLinkedList *list, void *dataOfElementToFind, int(compare)(void *firstElement, void *secondElement), void **outResult)
+{
+    if (list == NULL)
+        return 1;
+
+    if (compare == NULL)
+    {
+        printf("Provide a compare function\n");
+        return 1;
+    }
+    struct Node *current = list->head;
+    while (current != NULL)
+    {
+        struct Node *next = current->next;
+
+        int result = compare(current->data, dataOfElementToFind);
+        if (result == 0)
+        {
+            *outResult = current->data;
+            return 0;
+        }
+        else
+        {
+            current = next;
+        }
+    }
+    printf("Couldn't find node with such value\n");
+    return 1;
+}
 
 struct Node *findNodeInListAtIndex(struct SLinkedList *list, int index)
 {
