@@ -3,7 +3,7 @@
 Run
 
 ```bash
-gcc main.c src/singly-linked-list.c -o out/my_program
+gcc -g main.c src/singly-linked-list.c -o out/my_program
 ```
 
 ```bash

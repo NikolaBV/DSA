@@ -26,9 +26,9 @@ void DeleteAtIndex(struct SLinkedList *list, int index);
 void DeleteHead(struct SLinkedList *list);
 void DeleteTail(struct SLinkedList *list);
 void Traverse(struct SLinkedList *list, int (*callback)(void *data, void *context), void *context);
+void SLinkedListDestroy(struct SLinkedList *list, void (*dataDestructor)(void *data));
 struct Node *findNodeInListAtIndex(struct SLinkedList *list, int index);
-// 6. Traversal
 // 6.1. When you implement a traversal function, implement these as callbacks to the traversal:
-// freeList
-// 7. Reverse
-// 8. Search
+// 6.2 Reverse
+
+// 6.3 Search

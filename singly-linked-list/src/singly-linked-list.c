@@ -196,24 +196,49 @@ void DeleteAtIndex(struct SLinkedList *list, int index)
 
 void Traverse(struct SLinkedList *list, int (*callback)(void *data, void *context), void *context)
 {
-
-    if (list->head == NULL)
-    {
-        printf("Can't traverse an empty list \n");
-        return;
-    }
-
     struct Node *currentNode = list->head;
+    struct Node *nextNode = NULL;
 
     while (currentNode != NULL)
     {
-        int callbackResult = callback(currentNode->data, context);
+        nextNode = currentNode->next;
+
+        int callbackResult = callback(currentNode, context);
         if (callbackResult)
             break;
 
-        currentNode = currentNode->next;
+        currentNode = nextNode;
     }
 }
+int destroyList(void *data, void *context)
+{
+    struct Node *node = (struct Node *)data;
+    free(node);
+    return 0;
+}
+
+void SLinkedListDestroy(struct SLinkedList *list, void (*dataDestructor)(void *data))
+{
+    if (list == NULL) return;
+
+    struct Node *current = list->head;
+    while (current != NULL)
+    {
+        struct Node *next = current->next;
+
+        if (dataDestructor != NULL)
+        {
+            dataDestructor(current->data);
+        }
+
+        free(current);
+        current = next;
+    }
+
+    // 3. Free the LIST container
+    free(list);
+}
+
 
 struct Node *findNodeInListAtIndex(struct SLinkedList *list, int index)
 {

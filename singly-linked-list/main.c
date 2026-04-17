@@ -4,9 +4,9 @@
 int sumNodeValues(void *data, void *context)
 {
     int *currentTotal = (int *)context;
-    int value = (int)(intptr_t)data;
+    struct Node *node = (struct Node *)data;
 
-    *currentTotal += value;
+    *currentTotal += (int)(intptr_t)node->data;
     return 0;
 }
 
@@ -34,6 +34,6 @@ int main()
     printf("First node: %d\n", firstNode);
 
     printf("Sum of all nodes is: %d\n", sum);
-
+   
     free(linkedList);
 }
