@@ -279,10 +279,20 @@ void reverse(struct SLinkedList *list)
     }
 
     struct Node *current = list->head;
+    struct Node *prev = NULL;
 
     while (current != NULL)
     {
+        struct Node *next = current->next;
+
+        current->next = prev;
+        prev = current;
+        current = next;
     }
+
+    struct Node *tempHead = list->head;
+    list->head = list->tail;
+    list->tail = tempHead;
 }
 
 struct Node *findNodeInListAtIndex(struct SLinkedList *list, int index)

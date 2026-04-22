@@ -30,5 +30,3 @@ void reverse(struct SLinkedList *list);
 void SLinkedListDestroy(struct SLinkedList *list, void (*dataDestructor)(void *data));
 int find(struct SLinkedList *list, void *dataOfElementToFind, int(compare)(void *firstElement, void *secondElement), void **outResult);
 struct Node *findNodeInListAtIndex(struct SLinkedList *list, int index);
-// 6.1. When you implement a traversal function, implement these as callbacks to the traversal:
-// 6.2 Reverse
