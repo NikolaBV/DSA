@@ -270,6 +270,21 @@ int find(struct SLinkedList *list, void *dataOfElementToFind, int(compare)(void 
     return 1;
 }
 
+void reverse(struct SLinkedList *list)
+{
+    if (list == NULL)
+    {
+        printf("List is empty\n");
+        return;
+    }
+
+    struct Node *current = list->head;
+
+    while (current != NULL)
+    {
+    }
+}
+
 struct Node *findNodeInListAtIndex(struct SLinkedList *list, int index)
 {
     if (index < 0 || index >= list->length)

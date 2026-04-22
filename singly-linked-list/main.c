@@ -10,6 +10,16 @@ int sumNodeValues(void *data, void *context)
     return 0;
 }
 
+int printData(void *data, void *context)
+{
+    int *count = (int *)context;
+    struct Node *node = (struct Node *)data;
+    printf("[%d] %d, ", *count, (int *)(intptr_t)node->data);
+    *count += 1;
+
+    return 0;
+}
+
 int compareInts(void *firstNumber, void *secondNumber)
 {
     int firstNumberCasted = (int)(intptr_t)firstNumber;
@@ -27,6 +37,7 @@ int compareInts(void *firstNumber, void *secondNumber)
 
 int main()
 {
+    int count = 0;
     struct SLinkedList *linkedList = singlyLinkedListCreate(sizeof(int));
     if (linkedList == NULL)
     {
@@ -36,22 +47,24 @@ int main()
     }
 
     InsertAtTail(linkedList, (void *)(intptr_t)1);
+    Traverse(linkedList, printData, &count);
+    printf("\n");
+
     InsertAtTail(linkedList, (void *)(intptr_t)2);
+    Traverse(linkedList, printData, &count);
+    printf("\n");
+
     InsertAtTail(linkedList, (void *)(intptr_t)3);
+    Traverse(linkedList, printData, &count);
+    printf("\n");
+
+    count = 0;
 
     int *firstNode = (int *)linkedList->head->data;
-    int *secondNode = (int *)linkedList->head->next->data;
 
-    int sum = 0;
-
-    Traverse(linkedList, sumNodeValues, &sum);
-
-    printf("First node: %d\n", firstNode);
-    printf("Sum of all nodes is: %d\n", sum);
-
-    void *result;
-    if (find(linkedList, (void *)(intptr_t)4, compareInts, &result) == 0)
-    {
-        printf("Result data: %d", (void *)(intptr_t)result);
-    }
+    printf("First node is: %d\n", firstNode);
+    reverse(linkedList);
+    printf("After reverse: \n");
+    Traverse(linkedList, printData, &count);
+    printf("\n");
 }
