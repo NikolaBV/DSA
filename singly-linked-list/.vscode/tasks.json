@@ -1,0 +1,24 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "Build project",
+            "command": "gcc",
+            "args": [
+                "-g",
+                "-Wall",
+                "${workspaceFolder}/main.c",
+                "${workspaceFolder}/src/singly-linked-list.c",
+                "-I${workspaceFolder}",
+                "-o",
+                "${workspaceFolder}/out/my_program"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"]
+        }
+    ]
+}
