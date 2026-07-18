@@ -1,6 +1,3 @@
-
-#include <stdio.h>
-#include <stdlib.h>
 #include "../lib/singly-linked-list.h"
 
 struct SLinkedList *singlyLinkedListCreate(size_t elementSize)

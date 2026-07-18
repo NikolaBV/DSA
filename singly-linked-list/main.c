@@ -1,5 +1,4 @@
 #include "lib/singly-linked-list.h"
-#include <stdint.h>
 
 int sumNodeValues(void *data, void *context)
 {

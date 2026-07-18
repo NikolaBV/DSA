@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 struct Node
 {
@@ -20,7 +21,7 @@ struct DLinkedList
 
 struct DLinkedList *doublyLinkedListCreate(size_t elementSize);
 // TODO
-//  void InsertAtTail(struct DLinkedList *linkedList, void *dataOfNewNode);
+void InsertAtTail(struct DLinkedList *linkedList, void *dataOfNewNode);
 //  void InsertAtHead(struct DLinkedList *linkedList, void *dataOfNewNode);
 //  void UpdateAtIndex(struct DLinkedList *list, void *newDataToInsertIntoNode, int index);
 //  void InsertAtIndex(struct DLinkedList *list, void *data, int index);
