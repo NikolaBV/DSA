@@ -48,4 +48,29 @@ void InsertAtTail(DLinkedList *linkedList, void *dataOfNewNode)
 
 void InsertAtHead(DLinkedList *linkedList, void *dataOfNewNode)
 {
+    Node *newNode = malloc(sizeof(Node));
+
+    if (newNode == NULL)
+    {
+        printf("Couldn't allocate space for a node\n");
+        return;
+    }
+
+    newNode->data = dataOfNewNode;
+    newNode->next = NULL;
+    newNode->prev = NULL;
+
+    if (linkedList->head == NULL)
+    {
+        linkedList->head = newNode;
+        linkedList->tail = newNode;
+    }
+    else
+    {
+        Node *prevHead = linkedList->head;
+        linkedList->head = newNode;
+        linkedList->head->next = prevHead;
+        linkedList->head->next->prev = linkedList->head;
+    }
+    linkedList->length++;
 }
