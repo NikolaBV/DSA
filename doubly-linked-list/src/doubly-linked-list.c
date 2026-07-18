@@ -1,7 +1,7 @@
 #include "../lib/doubly-linked-list.h"
-struct DLinkedList *doublyLinkedListCreate(size_t elementSize)
+DLinkedList *doublyLinkedListCreate(size_t elementSize)
 {
-    struct DLinkedList *linkedList = malloc(sizeof(struct DLinkedList));
+    DLinkedList *linkedList = malloc(sizeof(DLinkedList));
 
     if (linkedList == NULL)
     {
@@ -17,9 +17,9 @@ struct DLinkedList *doublyLinkedListCreate(size_t elementSize)
     return linkedList;
 }
 
-void InsertAtTail(struct DLinkedList *linkedList, void *dataOfNewNode)
+void InsertAtTail(DLinkedList *linkedList, void *dataOfNewNode)
 {
-    struct Node *newNode = malloc(sizeof(struct Node));
+    Node *newNode = malloc(sizeof(Node));
 
     if (newNode == NULL)
     {
@@ -44,4 +44,8 @@ void InsertAtTail(struct DLinkedList *linkedList, void *dataOfNewNode)
         linkedList->tail = newNode;
     }
     linkedList->length++;
+}
+
+void InsertAtHead(DLinkedList *linkedList, void *dataOfNewNode)
+{
 }

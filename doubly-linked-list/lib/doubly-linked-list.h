@@ -4,25 +4,23 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-struct Node
+typedef struct Node
 {
     void *data;
     struct Node *prev;
     struct Node *next;
-};
-
-struct DLinkedList
+} Node;
+typedef struct
 {
-    struct Node *head;
-    struct Node *tail;
+    Node *head;
+    Node *tail;
     size_t length;
     size_t elementSize;
-};
+} DLinkedList;
 
-struct DLinkedList *doublyLinkedListCreate(size_t elementSize);
-// TODO
-void InsertAtTail(struct DLinkedList *linkedList, void *dataOfNewNode);
-//  void InsertAtHead(struct DLinkedList *linkedList, void *dataOfNewNode);
+DLinkedList *doublyLinkedListCreate(size_t elementSize);
+void InsertAtTail(DLinkedList *linkedList, void *dataOfNewNode);
+void InsertAtHead(DLinkedList *linkedList, void *dataOfNewNode);
 //  void UpdateAtIndex(struct DLinkedList *list, void *newDataToInsertIntoNode, int index);
 //  void InsertAtIndex(struct DLinkedList *list, void *data, int index);
 //  void DeleteAtIndex(struct DLinkedList *list, int index);

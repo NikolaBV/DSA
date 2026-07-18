@@ -2,7 +2,7 @@
 #include "lib/doubly-linked-list.h"
 int main()
 {
-    struct DLinkedList *linkedList = doublyLinkedListCreate(sizeof(int));
+    DLinkedList *linkedList = doublyLinkedListCreate(sizeof(int));
     InsertAtTail(linkedList, (void *)(intptr_t)1);
     InsertAtTail(linkedList, (void *)(intptr_t)2);
 
