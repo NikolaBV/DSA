@@ -1,4 +1,28 @@
 #include "../lib/doubly-linked-list.h"
+
+struct Node *findNodeInListAtIndex(DLinkedList *list, int index)
+{
+    if (index < 0 || index >= list->length)
+    {
+        printf("Index out of bounds\n");
+        return NULL;
+    }
+    struct Node *node = list->head;
+    for (int i = 0; i < list->length; i++)
+    {
+        if (i == index)
+        {
+            printf("Found element at index %d with value %d\n", i, node->data);
+            return node;
+        }
+        else
+        {
+            node = node->next;
+        }
+    }
+    return NULL;
+}
+
 DLinkedList *doublyLinkedListCreate(size_t elementSize)
 {
     DLinkedList *linkedList = malloc(sizeof(DLinkedList));
@@ -77,22 +101,17 @@ void InsertAtHead(DLinkedList *linkedList, void *dataOfNewNode)
 
 void UpdateAtIndex(DLinkedList *list, void *newDataToInsertIntoNode, int index)
 {
-    if (index < 0 || index > list->length)
+    if (list->head == NULL)
     {
-        printf("Index out of bounds\n");
+        printf("Can't insert at index of an empty linked list \n");
         return;
     }
-    if (index == 0)
+    struct Node *elementAtIndex = findNodeInListAtIndex(list, index);
+
+    if (elementAtIndex == NULL)
     {
-        InsertAtHead(list, newDataToInsertIntoNode);
-        return;
-    }
-    if (index == list->length)
-    {
-        InsertAtTail(list, newDataToInsertIntoNode);
         return;
     }
 
-    Node *newNode = malloc(sizeof(Node));
-    newNode->data = newDataToInsertIntoNode;
+    elementAtIndex->data = newDataToInsertIntoNode;
 }
