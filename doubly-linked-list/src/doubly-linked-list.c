@@ -74,3 +74,25 @@ void InsertAtHead(DLinkedList *linkedList, void *dataOfNewNode)
     }
     linkedList->length++;
 }
+
+void UpdateAtIndex(DLinkedList *list, void *newDataToInsertIntoNode, int index)
+{
+    if (index < 0 || index > list->length)
+    {
+        printf("Index out of bounds\n");
+        return;
+    }
+    if (index == 0)
+    {
+        InsertAtHead(list, newDataToInsertIntoNode);
+        return;
+    }
+    if (index == list->length)
+    {
+        InsertAtTail(list, newDataToInsertIntoNode);
+        return;
+    }
+
+    Node *newNode = malloc(sizeof(Node));
+    newNode->data = newDataToInsertIntoNode;
+}
