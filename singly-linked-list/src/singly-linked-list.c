@@ -156,7 +156,7 @@ void DeleteTail(struct SLinkedList *list)
         list->tail = newTail;
         list->tail->next = NULL;
     }
-
+    free(oldTail->data);
     free(oldTail);
     list->length--;
     printf("Tail deleted. New length: %d\n", list->length);

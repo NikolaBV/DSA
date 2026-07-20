@@ -146,3 +146,54 @@ void InsertAtIndex(DLinkedList *list, void *data, int index)
     elementAtTheIndex->prev = newNode;
     list->length++;
 }
+
+void DeleteTail(DLinkedList *list)
+{
+    if (list == NULL || list->head == NULL)
+    {
+        printf("Can't delete: List is empty.\n");
+        return;
+    }
+
+    Node *oldTail = list->tail;
+
+    if (list->head == list->tail)
+    {
+        list->head = NULL;
+        list->tail = NULL;
+    }
+    else
+    {
+        Node *newTail = oldTail->prev;
+        list->tail = newTail;
+        list->tail->next = NULL;
+    }
+
+    free(oldTail->data);
+    free(oldTail);
+    list->length--;
+}
+void DeleteHead(DLinkedList *list)
+{
+    if (list == NULL || list->head == NULL)
+    {
+        printf("Can't delete head: List is empty.\n");
+        return;
+    }
+
+    Node *oldHead = list->head;
+    list->head = oldHead->next;
+
+    if (list->length > 1)
+    {
+        list->head->prev = NULL;
+    }
+    if (list->head == NULL)
+    {
+        list->tail = NULL;
+    }
+    list->length--;
+
+    free(oldHead->data);
+    free(oldHead);
+}
