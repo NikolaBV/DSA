@@ -22,7 +22,7 @@ DLinkedList *doublyLinkedListCreate(size_t elementSize);
 void InsertAtTail(DLinkedList *linkedList, void *dataOfNewNode);
 void InsertAtHead(DLinkedList *linkedList, void *dataOfNewNode);
 void UpdateAtIndex(DLinkedList *list, void *newDataToInsertIntoNode, int index);
-//  void InsertAtIndex(struct DLinkedList *list, void *data, int index);
+void InsertAtIndex(DLinkedList *list, void *data, int index);
 //  void DeleteAtIndex(struct DLinkedList *list, int index);
 //  void DeleteHead(struct DLinkedList *list);
 //  void DeleteTail(struct DLinkedList *list);
