@@ -1,35 +1,30 @@
 #include "../lib/doubly-linked-list.h"
 
-struct Node *findNodeInListAtIndex(DLinkedList *list, int index)
+#include <stdio.h>
+#include <stdlib.h>
+
+static DllNode *dll_node_at(DllList *list, int index)
 {
-    if (index < 0 || index >= list->length)
+    if (index < 0 || (size_t)index >= list->length)
     {
-        printf("Index out of bounds\n");
         return NULL;
     }
-    struct Node *node = list->head;
-    for (int i = 0; i < list->length; i++)
+
+    DllNode *node = list->head;
+    for (int i = 0; i < index; i++)
     {
-        if (i == index)
-        {
-            printf("Found element at index %d with value %d\n", i, node->data);
-            return node;
-        }
-        else
-        {
-            node = node->next;
-        }
+        node = node->next;
     }
-    return NULL;
+    return node;
 }
 
-DLinkedList *doublyLinkedListCreate(size_t elementSize)
+DllList *dll_create(size_t elementSize)
 {
-    DLinkedList *linkedList = malloc(sizeof(DLinkedList));
+    DllList *linkedList = malloc(sizeof(DllList));
 
     if (linkedList == NULL)
     {
-        printf("Couldn't allocate memory for linked list");
+        printf("Couldn't allocate memory for linked list\n");
         return NULL;
     }
 
@@ -41,14 +36,13 @@ DLinkedList *doublyLinkedListCreate(size_t elementSize)
     return linkedList;
 }
 
-void InsertAtTail(DLinkedList *linkedList, void *dataOfNewNode)
+void dll_push_back(DllList *linkedList, void *dataOfNewNode)
 {
-    Node *newNode = malloc(sizeof(Node));
+    DllNode *newNode = malloc(sizeof(DllNode));
 
     if (newNode == NULL)
     {
-        printf("Couldn't allocate memory for the new node \n");
-        free(newNode);
+        printf("Couldn't allocate memory for the new node\n");
         return;
     }
 
@@ -70,9 +64,9 @@ void InsertAtTail(DLinkedList *linkedList, void *dataOfNewNode)
     linkedList->length++;
 }
 
-void InsertAtHead(DLinkedList *linkedList, void *dataOfNewNode)
+void dll_push_front(DllList *linkedList, void *dataOfNewNode)
 {
-    Node *newNode = malloc(sizeof(Node));
+    DllNode *newNode = malloc(sizeof(DllNode));
 
     if (newNode == NULL)
     {
@@ -91,7 +85,7 @@ void InsertAtHead(DLinkedList *linkedList, void *dataOfNewNode)
     }
     else
     {
-        Node *prevHead = linkedList->head;
+        DllNode *prevHead = linkedList->head;
         linkedList->head = newNode;
         linkedList->head->next = prevHead;
         linkedList->head->next->prev = linkedList->head;
@@ -99,26 +93,28 @@ void InsertAtHead(DLinkedList *linkedList, void *dataOfNewNode)
     linkedList->length++;
 }
 
-void UpdateAtIndex(DLinkedList *list, void *newDataToInsertIntoNode, int index)
+void dll_set_at(DllList *list, void *newDataToInsertIntoNode, int index)
 {
     if (list->head == NULL)
     {
-        printf("Can't insert at index of an empty linked list \n");
+        printf("Can't insert at index of an empty linked list\n");
         return;
     }
-    struct Node *elementAtIndex = findNodeInListAtIndex(list, index);
+
+    DllNode *elementAtIndex = dll_node_at(list, index);
 
     if (elementAtIndex == NULL)
     {
+        printf("Index out of bounds\n");
         return;
     }
 
     elementAtIndex->data = newDataToInsertIntoNode;
 }
 
-void InsertAtIndex(DLinkedList *list, void *data, int index)
+void dll_insert_at(DllList *list, void *data, int index)
 {
-    if (index < 0 || index > list->length)
+    if (index < 0 || (size_t)index > list->length)
     {
         printf("Index out of bounds\n");
         return;
@@ -126,20 +122,27 @@ void InsertAtIndex(DLinkedList *list, void *data, int index)
 
     if (index == 0)
     {
-        InsertAtHead(list, data);
+        dll_push_front(list, data);
         return;
     }
 
-    if (index == list->length)
+    if ((size_t)index == list->length)
     {
-        InsertAtTail(list, data);
+        dll_push_back(list, data);
         return;
     }
 
-    Node *newNode = malloc(sizeof(Node));
+    DllNode *newNode = malloc(sizeof(DllNode));
+
+    if (newNode == NULL)
+    {
+        printf("Couldn't allocate memory for the new node\n");
+        return;
+    }
+
     newNode->data = data;
 
-    Node *elementAtTheIndex = findNodeInListAtIndex(list, index);
+    DllNode *elementAtTheIndex = dll_node_at(list, index);
     newNode->next = elementAtTheIndex;
     newNode->prev = elementAtTheIndex->prev;
     elementAtTheIndex->prev->next = newNode;
@@ -147,7 +150,7 @@ void InsertAtIndex(DLinkedList *list, void *data, int index)
     list->length++;
 }
 
-void DeleteTail(DLinkedList *list)
+void dll_pop_back(DllList *list)
 {
     if (list == NULL || list->head == NULL)
     {
@@ -155,7 +158,7 @@ void DeleteTail(DLinkedList *list)
         return;
     }
 
-    Node *oldTail = list->tail;
+    DllNode *oldTail = list->tail;
 
     if (list->head == list->tail)
     {
@@ -164,7 +167,7 @@ void DeleteTail(DLinkedList *list)
     }
     else
     {
-        Node *newTail = oldTail->prev;
+        DllNode *newTail = oldTail->prev;
         list->tail = newTail;
         list->tail->next = NULL;
     }
@@ -173,7 +176,8 @@ void DeleteTail(DLinkedList *list)
     free(oldTail);
     list->length--;
 }
-void DeleteHead(DLinkedList *list)
+
+void dll_pop_front(DllList *list)
 {
     if (list == NULL || list->head == NULL)
     {
@@ -181,7 +185,7 @@ void DeleteHead(DLinkedList *list)
         return;
     }
 
-    Node *oldHead = list->head;
+    DllNode *oldHead = list->head;
     list->head = oldHead->next;
 
     if (list->length > 1)
@@ -196,4 +200,83 @@ void DeleteHead(DLinkedList *list)
 
     free(oldHead->data);
     free(oldHead);
+}
+
+bool dll_check_invariants(const DllList *list)
+{
+    if (list == NULL)
+    {
+        printf("INVARIANT: list is NULL\n");
+        return false;
+    }
+
+    if ((list->head == NULL) != (list->tail == NULL))
+    {
+        printf("INVARIANT: head and tail disagree about emptiness\n");
+        return false;
+    }
+
+    if (list->head != NULL && list->head->prev != NULL)
+    {
+        printf("INVARIANT: head->prev is not NULL\n");
+        return false;
+    }
+
+    if (list->tail != NULL && list->tail->next != NULL)
+    {
+        printf("INVARIANT: tail->next is not NULL\n");
+        return false;
+    }
+
+    size_t forward = 0;
+    DllNode *previous = NULL;
+    for (DllNode *node = list->head; node != NULL; node = node->next)
+    {
+        if (node->prev != previous)
+        {
+            printf("INVARIANT: forward walk, node %zu has a wrong prev pointer\n", forward);
+            return false;
+        }
+        previous = node;
+        forward++;
+    }
+
+    if (previous != list->tail)
+    {
+        printf("INVARIANT: forward walk did not end at tail\n");
+        return false;
+    }
+
+    size_t backward = 0;
+    DllNode *following = NULL;
+    for (DllNode *node = list->tail; node != NULL; node = node->prev)
+    {
+        if (node->next != following)
+        {
+            printf("INVARIANT: backward walk, node %zu has a wrong next pointer\n", backward);
+            return false;
+        }
+        following = node;
+        backward++;
+    }
+
+    if (following != list->head)
+    {
+        printf("INVARIANT: backward walk did not end at head\n");
+        return false;
+    }
+
+    if (forward != backward)
+    {
+        printf("INVARIANT: forward count %zu != backward count %zu\n", forward, backward);
+        return false;
+    }
+
+    if (forward != list->length)
+    {
+        printf("INVARIANT: walked %zu nodes but length says %zu\n", forward, list->length);
+        return false;
+    }
+
+    return true;
 }

@@ -1,33 +1,43 @@
-#include <stddef.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
+#pragma once
 
-typedef struct Node
+#include <stdbool.h>
+#include <stddef.h>
+
+typedef struct DllNode
 {
     void *data;
-    struct Node *prev;
-    struct Node *next;
-} Node;
+    struct DllNode *prev;
+    struct DllNode *next;
+} DllNode;
+
 typedef struct
 {
-    Node *head;
-    Node *tail;
+    DllNode *head;
+    DllNode *tail;
     size_t length;
     size_t elementSize;
-} DLinkedList;
+} DllList;
 
-DLinkedList *doublyLinkedListCreate(size_t elementSize);
-void InsertAtTail(DLinkedList *linkedList, void *dataOfNewNode);
-void InsertAtHead(DLinkedList *linkedList, void *dataOfNewNode);
-void UpdateAtIndex(DLinkedList *list, void *newDataToInsertIntoNode, int index);
-void InsertAtIndex(DLinkedList *list, void *data, int index);
-void DeleteHead(DLinkedList *list);
-void DeleteTail(DLinkedList *list);
-//  void DeleteAtIndex(struct DLinkedList *list, int index);
-//  void Traverse(struct DLinkedList *list, int (*callback)(void *data, void *context), void *context);
-//  void reverse(struct DLinkedList *list);
-//  void DLinkedListDestroy(struct DLinkedList *list, void (*dataDestructor)(void *data));
-//  int find(struct DLinkedList *list, void *dataOfElementToFind, int(compare)(void *firstElement, void *secondElement), void **outResult);
-//  struct Node *findNodeInListAtIndex(struct DLinkedList *list, int index);
+DllList *dll_create(size_t elementSize);
+
+void dll_push_back(DllList *list, void *data);
+void dll_push_front(DllList *list, void *data);
+void dll_insert_at(DllList *list, void *data, int index);
+void dll_set_at(DllList *list, void *data, int index);
+
+void dll_pop_front(DllList *list);
+void dll_pop_back(DllList *list);
+
+/* Walks the list forwards and backwards and checks that both directions
+   agree. Returns true if the list is well-formed, otherwise prints what is
+   wrong and returns false. Call it after every mutation in tests. */
+bool dll_check_invariants(const DllList *list);
+
+/* Still to implement:
+void dll_destroy(DllList *list, void (*dataDestructor)(void *data));
+void dll_remove_at(DllList *list, int index);
+void dll_traverse(DllList *list, int (*callback)(void *data, void *context), void *context);
+void dll_reverse(DllList *list);
+int  dll_find(DllList *list, void *needle, int (*compare)(void *a, void *b), void **outResult);
+void *dll_at(DllList *list, int index);
+*/

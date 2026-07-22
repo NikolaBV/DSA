@@ -1,33 +1,33 @@
-#include <stddef.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
+#pragma once
 
-struct Node
+#include <stddef.h>
+
+typedef struct SllNode
 {
     void *data;
-    struct Node *next;
-};
+    struct SllNode *next;
+} SllNode;
 
-struct SLinkedList
+typedef struct
 {
-    struct Node *head;
-    struct Node *tail;
+    SllNode *head;
+    SllNode *tail;
     size_t length;
     size_t elementSize;
-};
+} SllList;
 
-struct SLinkedList *singlyLinkedListCreate(size_t elementSize);
-void InsertAtTail(struct SLinkedList *linkedList, void *dataOfNewNode);
-void InsertAtHead(struct SLinkedList *linkedList, void *dataOfNewNode);
-void UpdateAtIndex(struct SLinkedList *list, void *newDataToInsertIntoNode, int index);
-void InsertAtIndex(struct SLinkedList *list, void *data, int index);
-void DeleteAtIndex(struct SLinkedList *list, int index);
-void DeleteHead(struct SLinkedList *list);
-void DeleteTail(struct SLinkedList *list);
-void Traverse(struct SLinkedList *list, int (*callback)(void *data, void *context), void *context);
-void reverse(struct SLinkedList *list);
-void SLinkedListDestroy(struct SLinkedList *list, void (*dataDestructor)(void *data));
-int find(struct SLinkedList *list, void *dataOfElementToFind, int(compare)(void *firstElement, void *secondElement), void **outResult);
-struct Node *findNodeInListAtIndex(struct SLinkedList *list, int index);
+SllList *sll_create(size_t elementSize);
+void sll_destroy(SllList *list, void (*dataDestructor)(void *data));
+
+void sll_push_back(SllList *list, void *data);
+void sll_push_front(SllList *list, void *data);
+void sll_insert_at(SllList *list, void *data, int index);
+void sll_set_at(SllList *list, void *data, int index);
+
+void sll_pop_front(SllList *list);
+void sll_pop_back(SllList *list);
+void sll_remove_at(SllList *list, int index);
+
+void sll_traverse(SllList *list, int (*callback)(void *data, void *context), void *context);
+int sll_find(SllList *list, void *needle, int (*compare)(void *a, void *b), void **outResult);
+void sll_reverse(SllList *list);

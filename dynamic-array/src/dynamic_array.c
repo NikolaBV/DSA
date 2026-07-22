@@ -1,102 +1,40 @@
+#include "../lib/dynamic_array.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
-#include "../lib/dynamic_array.h"
 
-// TODO Refactor size property of DynamicArray from int => size_t
+// TODO Refactor size/capacity of DynamicArray from int => size_t
 
-void resizeArray(DynamicArray *array, arithmeticOperation operation, int amount)
+static void da_resize(DynamicArray *array, int newCapacity)
 {
-    printf("BEFORE RESIZE LOGIC: size of the array %d \n", array->capacity * array->elementSize);
-
-    array->capacity = performArithmetic(operation, array->capacity, amount);
-
-    void *temp = realloc(array->data, array->capacity * array->elementSize);
+    void *temp = realloc(array->data, (size_t)newCapacity * array->elementSize);
     if (temp == NULL)
     {
-        printf("Failed with reallocation of the array \n");
+        printf("Failed with reallocation of the array\n");
         return;
     }
+
+    array->capacity = newCapacity;
     array->data = temp;
-    printf("AFTER RESIZE LOGIC size of the array : %d \n", array->capacity * array->elementSize);
 }
 
-void InsertAtHead(DynamicArray *array, void *elementToAdd)
-{
-    if (array->size == array->capacity)
-    {
-        resizeArray(array, MUL, 2);
-    }
-    char *temp = (char *)array->data;
-    char *currentElement = temp + (array->size * array->elementSize);
-    memcpy(currentElement, elementToAdd, array->elementSize);
-
-    array->size++;
-}
-
-void Remove(DynamicArray *array, void *elementToRemove)
-{
-    // TODO Implement and use binary search
-    char *temp = (char *)array->data;
-
-    for (int i = 0; i < array->size; i++)
-    {
-        char *currentElement = temp + (i * array->elementSize);
-        if (memcmp(currentElement, (char *)elementToRemove, array->elementSize) == 0)
-        {
-            memmove(currentElement, currentElement + array->elementSize, ((array->size - 1) - i) * array->elementSize);
-            array->size = array->size - 1;
-
-            if (array->size <= array->capacity / 4)
-            {
-                resizeArray(array, DIV, 2);
-            }
-            return;
-        }
-    }
-}
-
-void *elementAtIndex(DynamicArray *array, int indexOfElement)
-{
-    if (indexOfElement >= array->size)
-    {
-        printf("Array doesn't have such index ");
-        return NULL;
-    }
-    char *temp = (char *)array->data;
-    char *currentElement = temp + (indexOfElement * array->elementSize);
-    return (void *)currentElement;
-}
-
-void PrintArray(DynamicArray *array)
-{
-    if (array == NULL || array->data == NULL)
-        return;
-    char *temp = array->data;
-    for (int i = 0; i < array->size; i++)
-    {
-        char *currentElement = temp + (i * array->elementSize);
-        array->printer(currentElement);
-    }
-    printf("\n");
-}
-
-DynamicArray *dynamicArrayCreate(int capacity, size_t sizeOfElement)
+DynamicArray *da_create(int capacity, size_t elementSize)
 {
     DynamicArray *array = malloc(sizeof(DynamicArray));
 
     if (array == NULL)
     {
-        printf("Allocating memory for dynamic array struct failed \n");
+        printf("Allocating memory for dynamic array struct failed\n");
         return NULL;
     }
 
     array->capacity = capacity;
-    array->elementSize = sizeOfElement;
+    array->elementSize = elementSize;
     array->size = 0;
+    array->printer = NULL;
 
-    void *temp = malloc(array->capacity * sizeOfElement);
+    void *temp = malloc((size_t)capacity * elementSize);
     if (temp == NULL)
     {
         free(array);
@@ -106,8 +44,75 @@ DynamicArray *dynamicArrayCreate(int capacity, size_t sizeOfElement)
     return array;
 }
 
-void freeDynamicArray(DynamicArray *array)
+void da_destroy(DynamicArray *array)
 {
+    if (array == NULL)
+        return;
+
     free(array->data);
     free(array);
+}
+
+void da_push_back(DynamicArray *array, void *elementToAdd)
+{
+    if (array->size == array->capacity)
+    {
+        da_resize(array, array->capacity * 2);
+    }
+
+    char *temp = (char *)array->data;
+    char *currentElement = temp + ((size_t)array->size * array->elementSize);
+    memcpy(currentElement, elementToAdd, array->elementSize);
+
+    array->size++;
+}
+
+void da_remove_value(DynamicArray *array, void *elementToRemove)
+{
+    // TODO Implement and use binary search
+    char *temp = (char *)array->data;
+
+    for (int i = 0; i < array->size; i++)
+    {
+        char *currentElement = temp + ((size_t)i * array->elementSize);
+        if (memcmp(currentElement, elementToRemove, array->elementSize) == 0)
+        {
+            memmove(currentElement,
+                    currentElement + array->elementSize,
+                    (size_t)((array->size - 1) - i) * array->elementSize);
+            array->size = array->size - 1;
+
+            if (array->size <= array->capacity / 4)
+            {
+                da_resize(array, array->capacity / 2);
+            }
+            return;
+        }
+    }
+}
+
+void *da_at(DynamicArray *array, int index)
+{
+    if (index >= array->size)
+    {
+        printf("Array doesn't have such index\n");
+        return NULL;
+    }
+
+    char *temp = (char *)array->data;
+    return temp + ((size_t)index * array->elementSize);
+}
+
+void da_print(DynamicArray *array)
+{
+    if (array == NULL || array->data == NULL || array->printer == NULL)
+        return;
+
+    char *temp = array->data;
+    for (int i = 0; i < array->size; i++)
+    {
+        char *currentElement = temp + ((size_t)i * array->elementSize);
+        array->printer(currentElement);
+    }
+    printf("\n");
 }

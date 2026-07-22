@@ -1,10 +1,14 @@
 #include "lib/dynamic_array.h"
 #include <stdio.h>
 
-int main()
+static void print_int(const void *element)
 {
-    DynamicArray *dynamicArray = dynamicArrayCreate(3, sizeof(int));
-    dynamicArray->printer = printInt;
+    printf("%d ", *(const int *)element);
+}
+
+int main(void)
+{
+    DynamicArray *dynamicArray = da_create(3, sizeof(int));
 
     if (dynamicArray == NULL)
     {
@@ -12,20 +16,23 @@ int main()
         return 1;
     }
 
+    dynamicArray->printer = print_int;
+
     for (int i = 0; i < 5; i++)
     {
-        InsertAtHead(dynamicArray, (void *)&i);
-        PrintArray(dynamicArray);
+        da_push_back(dynamicArray, &i);
+        da_print(dynamicArray);
     }
 
     for (int i = 0; i < 5; i++)
     {
-        Remove(dynamicArray, (void *)&i);
-        PrintArray(dynamicArray);
+        da_remove_value(dynamicArray, &i);
+        da_print(dynamicArray);
     }
 
-    printf("Size of array after all elements REMOVED:  %d \n", dynamicArray->capacity * sizeof(int));
+    printf("Capacity in bytes after all elements removed: %zu\n",
+           (size_t)dynamicArray->capacity * sizeof(int));
 
-    freeDynamicArray(dynamicArray);
+    da_destroy(dynamicArray);
     return 0;
 }

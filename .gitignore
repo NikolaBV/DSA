@@ -1,0 +1,12 @@
+# Build output
+build/
+out/
+
+# Object files and archives
+*.o
+*.a
+
+# Crash dumps
+vgcore.*
+core
+core.*

@@ -1,9 +1,8 @@
-#ifndef DYNAMIC_ARRAY_H
-#include "../lib/utils.h"
+#pragma once
 
-#define DYNAMIC_ARRAY_H
+#include <stddef.h>
 
-typedef void (*PrintFunc)(const void *item);
+typedef void (*DaPrintFn)(const void *element);
 
 typedef struct dynamic_array
 {
@@ -11,14 +10,12 @@ typedef struct dynamic_array
     int size;
     int capacity;
     size_t elementSize;
-    PrintFunc printer;
+    DaPrintFn printer;
 } DynamicArray;
 
-DynamicArray *dynamicArrayCreate(int capacity, size_t sizeOfElement);
-void InsertAtHead(DynamicArray *array, void *elementToAdd);
-void Remove(DynamicArray *array, void *elementToRemove);
-void PrintArray(DynamicArray *array);
-void freeDynamicArray(DynamicArray *array);
-void *elementAtIndex(DynamicArray *array, int indexOfElement);
-
-#endif
+DynamicArray *da_create(int capacity, size_t elementSize);
+void da_destroy(DynamicArray *array);
+void da_push_back(DynamicArray *array, void *element);
+void da_remove_value(DynamicArray *array, void *element);
+void *da_at(DynamicArray *array, int index);
+void da_print(DynamicArray *array);
