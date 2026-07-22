@@ -10,6 +10,11 @@ static int *heap_int(int value)
     return p;
 }
 
+static int compareInts(void *firstNumber, void *secondNumber)
+{
+    return *(int *)firstNumber - *(int *)secondNumber;
+}
+
 static void print_forwards(const DllList *list)
 {
     printf("head -> ");

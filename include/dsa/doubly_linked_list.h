@@ -28,13 +28,9 @@ void dll_set_at(DllList *list, void *data, int index);
 void dll_pop_front(DllList *list);
 void dll_pop_back(DllList *list);
 void dll_destroy(DllList *list, void (*dataDestructor)(void *data));
-
-bool dll_check_invariants(const DllList *list);
-
-/* Still to implement:
 void dll_remove_at(DllList *list, int index);
 void dll_traverse(DllList *list, int (*callback)(void *data, void *context), void *context);
 void dll_reverse(DllList *list);
-int  dll_find(DllList *list, void *needle, int (*compare)(void *a, void *b), void **outResult);
-void *dll_at(DllList *list, int index);
-*/
+int dll_find(DllList *list, void *needle, int (*compare)(void *a, void *b), void **outResult);
+
+bool dll_check_invariants(const DllList *list);

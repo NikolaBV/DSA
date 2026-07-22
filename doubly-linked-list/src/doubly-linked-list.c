@@ -223,6 +223,101 @@ void dll_destroy(DllList *list, void (*dataDestructor)(void *data))
     free(list);
 }
 
+void dll_remove_at(DllList *list, int index)
+{
+    if (list == NULL || list->head == NULL)
+    {
+        printf("Can't delete: List is empty.\n");
+        return;
+    }
+    if (index == 0)
+    {
+        dll_pop_front(list);
+        return;
+    }
+    if ((size_t)index == list->length - 1)
+    {
+        dll_pop_back(list);
+
+        return;
+    }
+
+    if (index < 0 || index > (int)list->length - 1)
+    {
+        printf("Index out of bounds\n");
+        return;
+    }
+    DllNode *nodeToRemove = dll_node_at(list, index);
+
+    nodeToRemove->prev->next = nodeToRemove->next;
+    nodeToRemove->next->prev = nodeToRemove->prev;
+    free(nodeToRemove->data);
+    free(nodeToRemove);
+    list->length--;
+}
+
+void dll_traverse(DllList *list, int (*callback)(void *data, void *context), void *context)
+{
+    if (list == NULL)
+        return;
+    DllNode *currentNode = list->head;
+
+    while (currentNode != NULL)
+    {
+        DllNode *nextNode = currentNode->next;
+
+        if (callback(currentNode->data, context))
+            break;
+
+        currentNode = nextNode;
+    }
+}
+
+void dll_reverse(DllList *list)
+{
+    if (list == NULL)
+    {
+        return;
+    }
+
+    DllNode *current = list->head;
+    while (current != NULL)
+    {
+        DllNode *next = current->next;
+
+        current->next = current->prev;
+        current->prev = next;
+        current = next;
+    }
+
+    DllNode *tempHead = list->head;
+    list->head = list->tail;
+    list->tail = tempHead;
+}
+
+int dll_find(DllList *list, void *needle, int (*compare)(void *a, void *b), void **outResult)
+{
+    if (list == NULL || compare == NULL)
+        return 1;
+
+    DllNode *current = list->head;
+    while (current != NULL)
+    {
+        if (compare(current->data, needle) == 0)
+        {
+            if (outResult != NULL)
+                *outResult = current->data;
+            return 0;
+        }
+        current = current->next;
+    }
+
+    if (outResult != NULL)
+        *outResult = NULL;
+
+    return 1;
+}
+
 bool dll_check_invariants(const DllList *list)
 {
     if (list == NULL)
