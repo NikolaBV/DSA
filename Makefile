@@ -1,5 +1,5 @@
 CC     := gcc
-CFLAGS := -std=c11 -Wall -Wextra -Werror -g
+CFLAGS := -std=c11 -Wall -Wextra -Werror -g -Iinclude
 BUILD  := build
 EXTRA  :=
 

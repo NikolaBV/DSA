@@ -1,4 +1,4 @@
-#include "../singly-linked-list/lib/singly-linked-list.h"
+#include "dsa/singly_linked_list.h"
 #include "check.h"
 
 static int value_at(const SllList *list, size_t index)

@@ -1,4 +1,4 @@
-#include "../dynamic-array/lib/dynamic_array.h"
+#include "dsa/dynamic_array.h"
 #include "check.h"
 
 #include <string.h>

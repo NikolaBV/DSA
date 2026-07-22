@@ -1,5 +1,4 @@
-#include "../lib/dynamic_array.h"
-
+#include "dsa/dynamic_array.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

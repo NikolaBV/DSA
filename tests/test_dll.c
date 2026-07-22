@@ -1,4 +1,4 @@
-#include "../doubly-linked-list/lib/doubly-linked-list.h"
+#include "dsa/doubly_linked_list.h"
 #include "check.h"
 
 /* dll_pop_front / dll_pop_back free the node's data, so every payload here is

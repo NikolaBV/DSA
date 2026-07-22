@@ -4,9 +4,9 @@
    project declared its own `struct Node`, and the two lists both defined
    InsertAtTail, InsertAtHead, UpdateAtIndex and find at global scope. */
 
-#include "../doubly-linked-list/lib/doubly-linked-list.h"
-#include "../dynamic-array/lib/dynamic_array.h"
-#include "../singly-linked-list/lib/singly-linked-list.h"
+#include "dsa/doubly_linked_list.h"
+#include "dsa/dynamic_array.h"
+#include "dsa/singly_linked_list.h"
 #include "check.h"
 
 int main(void)

@@ -1,4 +1,4 @@
-#include "lib/doubly-linked-list.h"
+#include "dsa/doubly_linked_list.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -48,7 +48,6 @@ int main(void)
 
     while (linkedList->length > 0)
         dll_pop_back(linkedList);
-    free(linkedList);
-
+    dll_destroy(linkedList, free);
     return 0;
 }

@@ -1,4 +1,4 @@
-#include "lib/dynamic_array.h"
+#include "dsa/dynamic_array.h"
 #include <stdio.h>
 
 static void print_int(const void *element)

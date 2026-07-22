@@ -1,4 +1,4 @@
-#include "lib/singly-linked-list.h"
+#include "dsa/singly_linked_list.h"
 
 #include <stdio.h>
 #include <stdlib.h>

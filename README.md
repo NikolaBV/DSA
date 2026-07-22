@@ -6,7 +6,7 @@ Hand-written data structures in C, built as fundamentals practice.
 |---|---|
 | Dynamic array | implemented |
 | Singly linked list | implemented |
-| Doubly linked list | in progress — see `doubly-linked-list/lib/doubly-linked-list.h` |
+| Doubly linked list | in progress — see `include/dsa/doubly_linked_list.h` |
 | Stack | not started |
 | Queue | not started |
 

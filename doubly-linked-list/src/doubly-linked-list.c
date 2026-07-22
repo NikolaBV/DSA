@@ -1,4 +1,4 @@
-#include "../lib/doubly-linked-list.h"
+#include "dsa/doubly_linked_list.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -200,6 +200,28 @@ void dll_pop_front(DllList *list)
 
     free(oldHead->data);
     free(oldHead);
+}
+
+void dll_destroy(DllList *list, void (*dataDestructor)(void *data))
+{
+    if (list == NULL)
+        return;
+
+    DllNode *current = list->head;
+    while (current != NULL)
+    {
+        DllNode *next = current->next;
+
+        if (dataDestructor != NULL)
+        {
+            dataDestructor(current->data);
+        }
+
+        free(current);
+        current = next;
+    }
+
+    free(list);
 }
 
 bool dll_check_invariants(const DllList *list)
