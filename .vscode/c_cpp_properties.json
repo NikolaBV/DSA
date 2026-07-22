@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/include",
+                "${workspaceFolder}/tests"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "compilerArgs": [
+                "-std=c11",
+                "-Wall",
+                "-Wextra"
+            ],
+            "cStandard": "c11",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}
