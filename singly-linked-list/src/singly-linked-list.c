@@ -1,15 +1,30 @@
+#include "dsa/singly_linked_list.h"
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "../lib/singly-linked-list.h"
 
-struct SLinkedList *singlyLinkedListCreate(size_t elementSize)
+static SllNode *sll_node_at(SllList *list, int index)
 {
-    struct SLinkedList *linkedList = malloc(sizeof(struct SLinkedList));
+    if (index < 0 || (size_t)index >= list->length)
+    {
+        return NULL;
+    }
+
+    SllNode *node = list->head;
+    for (int i = 0; i < index; i++)
+    {
+        node = node->next;
+    }
+    return node;
+}
+
+SllList *sll_create(size_t elementSize)
+{
+    SllList *linkedList = malloc(sizeof(SllList));
 
     if (linkedList == NULL)
     {
-        printf("Couldn't allocate memory for linked list");
+        printf("Couldn't allocate memory for linked list\n");
         return NULL;
     }
 
@@ -21,9 +36,9 @@ struct SLinkedList *singlyLinkedListCreate(size_t elementSize)
     return linkedList;
 }
 
-void InsertAtTail(struct SLinkedList *linkedList, void *dataOfNewNode)
+void sll_push_back(SllList *linkedList, void *dataOfNewNode)
 {
-    struct Node *newNode = malloc(sizeof(struct Node));
+    SllNode *newNode = malloc(sizeof(SllNode));
     if (newNode == NULL)
     {
         printf("Couldn't allocate memory for the new node\n");
@@ -46,9 +61,9 @@ void InsertAtTail(struct SLinkedList *linkedList, void *dataOfNewNode)
     linkedList->length++;
 }
 
-void InsertAtHead(struct SLinkedList *linkedList, void *dataOfNewNode)
+void sll_push_front(SllList *linkedList, void *dataOfNewNode)
 {
-    struct Node *newNode = malloc(sizeof(struct Node));
+    SllNode *newNode = malloc(sizeof(SllNode));
     if (newNode == NULL)
     {
         printf("Couldn't allocate space for a node\n");
@@ -56,6 +71,7 @@ void InsertAtHead(struct SLinkedList *linkedList, void *dataOfNewNode)
     }
 
     newNode->data = dataOfNewNode;
+    newNode->next = NULL;
 
     if (linkedList->head == NULL)
     {
@@ -64,32 +80,35 @@ void InsertAtHead(struct SLinkedList *linkedList, void *dataOfNewNode)
     }
     else
     {
-        struct Node *previousHead = linkedList->head;
+        SllNode *previousHead = linkedList->head;
         linkedList->head = newNode;
         newNode->next = previousHead;
     }
     linkedList->length++;
 }
-void UpdateAtIndex(struct SLinkedList *list, void *newDataToInsertIntoNode, int index)
-{
 
+void sll_set_at(SllList *list, void *newDataToInsertIntoNode, int index)
+{
     if (list->head == NULL)
     {
-        printf("Can't insert at index of an empty linked list \n");
+        printf("Can't insert at index of an empty linked list\n");
         return;
     }
-    struct Node *elementAtIndex = findNodeInListAtIndex(list, index);
+
+    SllNode *elementAtIndex = sll_node_at(list, index);
 
     if (elementAtIndex == NULL)
     {
+        printf("Index out of bounds\n");
         return;
     }
 
     elementAtIndex->data = newDataToInsertIntoNode;
 }
-void InsertAtIndex(struct SLinkedList *list, void *data, int index)
+
+void sll_insert_at(SllList *list, void *data, int index)
 {
-    if (index < 0 || index > list->length)
+    if (index < 0 || (size_t)index > list->length)
     {
         printf("Index out of bounds\n");
         return;
@@ -97,19 +116,25 @@ void InsertAtIndex(struct SLinkedList *list, void *data, int index)
 
     if (index == 0)
     {
-        InsertAtHead(list, data);
-        return;
-    }
-    if (index == list->length)
-    {
-        InsertAtTail(list, data);
+        sll_push_front(list, data);
         return;
     }
 
-    struct Node *newNode = malloc(sizeof(struct Node));
+    if ((size_t)index == list->length)
+    {
+        sll_push_back(list, data);
+        return;
+    }
+
+    SllNode *newNode = malloc(sizeof(SllNode));
+    if (newNode == NULL)
+    {
+        printf("Couldn't allocate memory for the new node\n");
+        return;
+    }
     newNode->data = data;
 
-    struct Node *prev = findNodeInListAtIndex(list, index - 1);
+    SllNode *prev = sll_node_at(list, index - 1);
 
     newNode->next = prev->next;
     prev->next = newNode;
@@ -117,7 +142,7 @@ void InsertAtIndex(struct SLinkedList *list, void *data, int index)
     list->length++;
 }
 
-void DeleteHead(struct SLinkedList *list)
+void sll_pop_front(SllList *list)
 {
     if (list == NULL || list->head == NULL)
     {
@@ -125,7 +150,7 @@ void DeleteHead(struct SLinkedList *list)
         return;
     }
 
-    struct Node *oldHead = list->head;
+    SllNode *oldHead = list->head;
     list->head = oldHead->next;
 
     if (list->head == NULL)
@@ -135,10 +160,9 @@ void DeleteHead(struct SLinkedList *list)
     list->length--;
 
     free(oldHead);
-    printf("Head deleted. New length: %d\n", list->length);
 }
 
-void DeleteTail(struct SLinkedList *list)
+void sll_pop_back(SllList *list)
 {
     if (list == NULL || list->head == NULL)
     {
@@ -146,7 +170,7 @@ void DeleteTail(struct SLinkedList *list)
         return;
     }
 
-    struct Node *oldTail = list->tail;
+    SllNode *oldTail = list->tail;
 
     if (list->head == list->tail)
     {
@@ -155,17 +179,16 @@ void DeleteTail(struct SLinkedList *list)
     }
     else
     {
-        struct Node *newTail = findNodeInListAtIndex(list, list->length - 2);
+        SllNode *newTail = sll_node_at(list, (int)list->length - 2);
         list->tail = newTail;
         list->tail->next = NULL;
     }
 
     free(oldTail);
     list->length--;
-    printf("Tail deleted. New length: %d\n", list->length);
 }
 
-void DeleteAtIndex(struct SLinkedList *list, int index)
+void sll_remove_at(SllList *list, int index)
 {
     if (list == NULL || list->head == NULL)
     {
@@ -174,59 +197,52 @@ void DeleteAtIndex(struct SLinkedList *list, int index)
     }
     if (index == 0)
     {
-        printf("Call delete head \n");
-        DeleteHead(list);
+        sll_pop_front(list);
         return;
     }
-    if (index == list->length - 1)
+    if ((size_t)index == list->length - 1)
     {
-        printf("Call delete tail \n");
-        DeleteTail(list);
+        sll_pop_back(list);
         return;
     }
 
-    struct Node *elementToDelete = findNodeInListAtIndex(list, index);
-    struct Node *previous = findNodeInListAtIndex(list, index - 1);
+    SllNode *previous = sll_node_at(list, index - 1);
+    if (previous == NULL || previous->next == NULL)
+    {
+        printf("Index out of bounds\n");
+        return;
+    }
 
+    SllNode *elementToDelete = previous->next;
     previous->next = elementToDelete->next;
     free(elementToDelete);
     list->length--;
-    printf("Tail deleted. New length: %d\n", list->length);
 }
 
-void Traverse(struct SLinkedList *list, int (*callback)(void *data, void *context), void *context)
+void sll_traverse(SllList *list, int (*callback)(void *data, void *context), void *context)
 {
-    struct Node *currentNode = list->head;
-    struct Node *nextNode = NULL;
+    SllNode *currentNode = list->head;
 
     while (currentNode != NULL)
     {
-        nextNode = currentNode->next;
+        SllNode *nextNode = currentNode->next;
 
-        int callbackResult = callback(currentNode, context);
-        if (callbackResult)
+        if (callback(currentNode->data, context))
             break;
 
         currentNode = nextNode;
     }
 }
-int destroyList(void *data, void *context)
-{
-    struct Node *node = (struct Node *)data;
-    free(node);
-    return 0;
-}
 
-// TODO Refactor to use the Traverse function logic
-void SLinkedListDestroy(struct SLinkedList *list, void (*dataDestructor)(void *data))
+void sll_destroy(SllList *list, void (*dataDestructor)(void *data))
 {
     if (list == NULL)
         return;
 
-    struct Node *current = list->head;
+    SllNode *current = list->head;
     while (current != NULL)
     {
-        struct Node *next = current->next;
+        SllNode *next = current->next;
 
         if (dataDestructor != NULL)
         {
@@ -240,7 +256,7 @@ void SLinkedListDestroy(struct SLinkedList *list, void (*dataDestructor)(void *d
     free(list);
 }
 
-int find(struct SLinkedList *list, void *dataOfElementToFind, int(compare)(void *firstElement, void *secondElement), void **outResult)
+int sll_find(SllList *list, void *needle, int (*compare)(void *a, void *b), void **outResult)
 {
     if (list == NULL)
         return 1;
@@ -250,70 +266,41 @@ int find(struct SLinkedList *list, void *dataOfElementToFind, int(compare)(void 
         printf("Provide a compare function\n");
         return 1;
     }
-    struct Node *current = list->head;
+
+    SllNode *current = list->head;
     while (current != NULL)
     {
-        struct Node *next = current->next;
-
-        int result = compare(current->data, dataOfElementToFind);
-        if (result == 0)
+        if (compare(current->data, needle) == 0)
         {
             *outResult = current->data;
             return 0;
         }
-        else
-        {
-            current = next;
-        }
+        current = current->next;
     }
-    printf("Couldn't find node with such value\n");
+
     return 1;
 }
 
-void reverse(struct SLinkedList *list)
+void sll_reverse(SllList *list)
 {
     if (list == NULL)
     {
-        printf("List is empty\n");
         return;
     }
 
-    struct Node *current = list->head;
-    struct Node *prev = NULL;
+    SllNode *current = list->head;
+    SllNode *prev = NULL;
 
     while (current != NULL)
     {
-        struct Node *next = current->next;
+        SllNode *next = current->next;
 
         current->next = prev;
         prev = current;
         current = next;
     }
 
-    struct Node *tempHead = list->head;
+    SllNode *tempHead = list->head;
     list->head = list->tail;
     list->tail = tempHead;
-}
-
-struct Node *findNodeInListAtIndex(struct SLinkedList *list, int index)
-{
-    if (index < 0 || index >= list->length)
-    {
-        printf("Index out of bounds\n");
-        return NULL;
-    }
-    struct Node *node = list->head;
-    for (int i = 0; i < list->length; i++)
-    {
-        if (i == index)
-        {
-            printf("Found element at index %d with value %d\n", i, node->data);
-            return node;
-        }
-        else
-        {
-            node = node->next;
-        }
-    }
-    return NULL;
 }

@@ -1,70 +1,71 @@
-#include "lib/singly-linked-list.h"
-#include <stdint.h>
+#include "dsa/singly_linked_list.h"
 
-int sumNodeValues(void *data, void *context)
+#include <stdio.h>
+#include <stdlib.h>
+
+static int *heap_int(int value)
 {
-    int *currentTotal = (int *)context;
-    struct Node *node = (struct Node *)data;
+    int *p = malloc(sizeof(int));
+    *p = value;
+    return p;
+}
 
-    *currentTotal += (int)(intptr_t)node->data;
+static int sumNodeValues(void *data, void *context)
+{
+    *(int *)context += *(int *)data;
     return 0;
 }
 
-int printData(void *data, void *context)
+static int printData(void *data, void *context)
 {
     int *count = (int *)context;
-    struct Node *node = (struct Node *)data;
-    printf("[%d] %d, ", *count, (int *)(intptr_t)node->data);
+    printf("[%d] %d, ", *count, *(int *)data);
     *count += 1;
-
     return 0;
 }
 
-int compareInts(void *firstNumber, void *secondNumber)
+static int compareInts(void *firstNumber, void *secondNumber)
 {
-    int firstNumberCasted = (int)(intptr_t)firstNumber;
-    int secondNumberCasted = (int)(intptr_t)secondNumber;
-
-    if (firstNumberCasted == secondNumberCasted)
-    {
-        return 0;
-    }
-    else
-    {
-        return 1;
-    }
+    return *(int *)firstNumber - *(int *)secondNumber;
 }
 
-int main()
+int main(void)
 {
     int count = 0;
-    struct SLinkedList *linkedList = singlyLinkedListCreate(sizeof(int));
+    SllList *linkedList = sll_create(sizeof(int));
     if (linkedList == NULL)
     {
-        free(linkedList);
-        printf("Couldn't allocate memory for the new node\n");
-        return -1;
+        printf("Couldn't allocate memory for the list\n");
+        return 1;
     }
 
-    InsertAtTail(linkedList, (void *)(intptr_t)1);
-    Traverse(linkedList, printData, &count);
-    printf("\n");
+    for (int i = 1; i <= 3; i++)
+    {
+        sll_push_back(linkedList, heap_int(i));
+        count = 0;
+        sll_traverse(linkedList, printData, &count);
+        printf("\n");
+    }
 
-    InsertAtTail(linkedList, (void *)(intptr_t)2);
-    Traverse(linkedList, printData, &count);
-    printf("\n");
+    int total = 0;
+    sll_traverse(linkedList, sumNodeValues, &total);
+    printf("Sum of all values: %d\n", total);
 
-    InsertAtTail(linkedList, (void *)(intptr_t)3);
-    Traverse(linkedList, printData, &count);
-    printf("\n");
+    int needle = 2;
+    void *found = NULL;
+    if (sll_find(linkedList, &needle, compareInts, &found) == 0)
+    {
+        printf("Found: %d\n", *(int *)found);
+    }
 
-    count = 0;
+    printf("First node is: %d\n", *(int *)linkedList->head->data);
 
-    int *firstNode = (int *)linkedList->head->data;
-
-    printf("First node is: %d\n", firstNode);
-    reverse(linkedList);
+    sll_reverse(linkedList);
     printf("After reverse: \n");
-    Traverse(linkedList, printData, &count);
+    count = 0;
+    sll_traverse(linkedList, printData, &count);
     printf("\n");
+
+    sll_destroy(linkedList, free);
+    return 0;
 }
